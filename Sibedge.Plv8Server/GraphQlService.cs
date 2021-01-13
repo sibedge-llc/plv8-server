@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Dapper;
     using Helpers;
+    using Microsoft.Extensions.Options;
     using Models;
     using Models.Introspection;
     using Newtonsoft.Json;
@@ -15,14 +16,15 @@
     public class GraphQlService
     {
         private static string[] FilterOperators = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains" };
-        private IDbConnection _connection;
-        private Settings _settings;
+
+        private readonly IDbConnection _connection;
+        private readonly Settings _settings;
 
         /// <summary> ctor </summary>
-        public GraphQlService(IDbConnection connection, Settings settings)
+        public GraphQlService(IDbConnection connection, IOptions<Settings> settings)
         {
             _connection = connection;
-            _settings = settings;
+            _settings = settings.Value;
         }
 
         /// <summary> Execute graphQL query </summary>

@@ -9,7 +9,7 @@
     /// <summary> Base service for executing stored functions (not only plv8) </summary>
     public abstract class V8FuncServiceBase
     {
-        private IDbConnection _connection;
+        private readonly IDbConnection _connection;
 
         /// <summary> ctor </summary>
         public V8FuncServiceBase(IDbConnection connection)
