@@ -327,7 +327,7 @@
             var ret = new List<Element>();
             var numericTypes = new[] { "integer", "bigint", "real", "double_precision", "numeric" };
 
-            var aggFunctions = new[] { "max", "min", "avg" };
+            var aggFunctions = new[] { "max", "min", "avg", "sum" };
             if (this._settings.AggPostfix[0] == '_')
             {
                 aggFunctions = aggFunctions.Select(x => x + "_").ToArray();
