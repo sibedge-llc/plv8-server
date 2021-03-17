@@ -220,7 +220,14 @@
                 {
                     Name = tableName + this._settings.AggPostfix,
                     Type = new Type(Kinds.InputObject, tableName + this._settings.AggPostfix),
-                    Args = new List<InputField>()
+                    Args = new List<InputField>
+                    {
+                        new InputField
+                        {
+                            Name = "filter",
+                            Type = new Type(Kinds.InputObject, $"{tableName}Filter")
+                        }
+                    }
                 });
             }
 
@@ -312,7 +319,14 @@
                     {
                         Name = multipleLink.TableName + this._settings.AggPostfix,
                         Type = new Type(Kinds.InputObject, multipleLink.TableName + this._settings.AggPostfix),
-                        Args = new List<InputField>()
+                        Args = new List<InputField>
+                        {
+                            new InputField
+                            {
+                                Name = "filter",
+                                Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter")
+                            }
+                        }
                     });
                 }
 
