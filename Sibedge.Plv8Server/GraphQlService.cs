@@ -15,7 +15,7 @@
     /// <summary> GraphQL service </summary>
     public class GraphQlService
     {
-        private static string[] FilterOperators = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains" };
+        private static string[] FilterOperators = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains" };
 
         private readonly IDbConnection _connection;
         private readonly Settings _settings;
