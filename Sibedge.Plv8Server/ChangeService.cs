@@ -5,37 +5,40 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Dapper;
+    using Helpers;
     using Microsoft.Extensions.Options;
+    using Models;
 
     /// <summary> Service for inserting / updating data </summary>
-    public class InsertService
+    public class ChangeService
     {
         private readonly IDbConnection _connection;
-        private readonly IList<string> _defaultKeys;
+        private readonly Settings _settings;
 
         /// <summary> ctor </summary>
-        public InsertService(IDbConnection connection, IOptions<Settings> settings)
+        public ChangeService(IDbConnection connection, IOptions<Settings> settings)
         {
             _connection = connection;
-            _defaultKeys = settings.Value.DefaultKeys;
+            _settings = settings.Value;
         }
 
         /// <summary> Insert data into table </summary>
         /// <param name="tableName"> Table name </param>
         /// <param name="data"> Data to insert </param>
         /// <param name="idKeys"> Primary key fields </param>
-        /// <param name="upsert"> Use "ON CONFLICT UPDATE" </param>
-        public Task<string> Insert(string tableName, string data, IList<string> idKeys, bool upsert = false)
+        /// <param name="operation"> Data change operation </param>
+        public Task<string> Change(string tableName, string data, IList<string> idKeys, ChangeOperation operation)
         {
-            var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @upsert);";
+            var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation);";
 
             return _connection.QueryFirstAsync<string>(sql,
                 new
                 {
                     tableName,
                     data,
-                    idKeys = idKeys?.Any() == true ? idKeys : _defaultKeys,
-                    upsert
+                    idKeys = idKeys?.Any() == true ? idKeys : _settings.DefaultKeys,
+                    operation = operation.GetDescription(),
+                    schema = _settings.Schema
                 });
         }
     }

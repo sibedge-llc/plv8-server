@@ -49,7 +49,7 @@
             }
             else
             {
-                var sql = $"SELECT graphql.execute('{query.Query}', '{this._settings.Schema}');";
+                var sql = $"SELECT graphql.execute('{query.Query}', '{_settings.Schema}');";
                 json = await _connection.QueryFirstAsync<string>(sql);
             }
 
