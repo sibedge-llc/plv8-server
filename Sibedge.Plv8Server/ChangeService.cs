@@ -29,7 +29,7 @@
         /// <param name="operation"> Data change operation </param>
         public Task<string> Change(string tableName, string data, IList<string> idKeys, ChangeOperation operation)
         {
-            var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation);";
+            var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema);";
 
             return _connection.QueryFirstAsync<string>(sql,
                 new
