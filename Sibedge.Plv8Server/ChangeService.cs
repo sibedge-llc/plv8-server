@@ -12,14 +12,14 @@
     /// <summary> Service for inserting / updating data </summary>
     public class ChangeService
     {
-        private readonly IDbConnection _connection;
-        private readonly Settings _settings;
+        private readonly IDbConnection connection;
+        private readonly Settings settings;
 
-        /// <summary> ctor </summary>
+        /// <summary> Initializes a new instance of the <see cref="ChangeService"/> class. </summary>
         public ChangeService(IDbConnection connection, IOptions<Settings> settings)
         {
-            _connection = connection;
-            _settings = settings.Value;
+            this.connection = connection;
+            this.settings = settings.Value;
         }
 
         /// <summary> Insert data into table </summary>
@@ -31,14 +31,15 @@
         {
             var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema);";
 
-            return _connection.QueryFirstAsync<string>(sql,
+            return this.connection.QueryFirstAsync<string>(
+                sql,
                 new
                 {
                     tableName,
                     data,
-                    idKeys = idKeys?.Any() == true ? idKeys : _settings.DefaultKeys,
+                    idKeys = idKeys?.Any() == true ? idKeys : this.settings.DefaultKeys,
                     operation = operation.GetDescription(),
-                    schema = _settings.Schema
+                    schema = this.settings.Schema,
                 });
         }
     }

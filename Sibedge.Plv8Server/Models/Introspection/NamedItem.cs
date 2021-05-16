@@ -5,12 +5,12 @@
     /// <summary> Item with name </summary>
     public class NamedItem
     {
-        /// <summary> Default ctor </summary>
+        /// <summary>Initializes a new instance of the <see cref="NamedItem"/> class. </summary>
         public NamedItem()
         {
         }
 
-        /// <summary> Ctor </summary>
+        /// <summary>Initializes a new instance of the <see cref="NamedItem"/> class. </summary>
         public NamedItem(string name)
         {
             this.Name = name;

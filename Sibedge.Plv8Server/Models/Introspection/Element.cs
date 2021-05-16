@@ -8,7 +8,7 @@
     {
         /// <summary> Input fields </summary>
         [JsonProperty("inputFields")]
-        public List<InputField> InputFields { get; set; }
+        public IList<InputField> InputFields { get; set; }
 
         /// <summary> Name </summary>
         [JsonProperty("name")]
@@ -20,15 +20,15 @@
 
         /// <summary> Interfaces </summary>
         [JsonProperty("interfaces")]
-        public List<Type> Interfaces { get; set; }
+        public IList<Type> Interfaces { get; set; }
 
         /// <summary> Enum values </summary>
         [JsonProperty("enumValues")]
-        public List<EnumValue> EnumValues { get; set; }
+        public IList<EnumValue> EnumValues { get; set; }
 
         /// <summary> Fields </summary>
         [JsonProperty("fields")]
-        public List<Field> Fields { get; set; }
+        public IList<Field> Fields { get; set; }
 
         /// <summary> Kind </summary>
         [JsonProperty("kind")]
@@ -36,6 +36,6 @@
 
         /// <summary> Possible types </summary>
         [JsonProperty("possibleTypes")]
-        public List<Type> PossibleTypes { get; set; }
+        public IList<Type> PossibleTypes { get; set; }
     }
 }

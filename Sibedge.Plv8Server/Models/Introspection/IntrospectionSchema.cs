@@ -8,7 +8,7 @@
     {
         /// <summary> Directives </summary>
         [JsonProperty("directives")]
-        public List<object> Directives { get; set; }
+        public IList<object> Directives { get; set; }
 
         /// <summary> Mutation type </summary>
         [JsonProperty("mutationType")]
@@ -24,6 +24,6 @@
 
         /// <summary> Types </summary>
         [JsonProperty("types")]
-        public List<Element> Types { get; set; }
+        public IList<Element> Types { get; set; }
     }
 }

@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
+    /// <summary> GraphQL introspection field </summary>
     public class Field : FieldBase
     {
         /// <summary> Args </summary>
         [JsonProperty("args")]
-        public List<InputField> Args { get; set; } = new List<InputField>();
+        public IList<InputField> Args { get; set; } = new List<InputField>();
 
         /// <summary> Name </summary>
         [JsonProperty("isDeprecated")]

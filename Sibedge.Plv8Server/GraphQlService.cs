@@ -15,16 +15,16 @@
     /// <summary> GraphQL service </summary>
     public class GraphQlService
     {
-        private static string[] FilterOperators = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains" };
+        private static readonly string[] FilterOperators = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains" };
 
-        private readonly IDbConnection _connection;
-        private readonly Settings _settings;
+        private readonly IDbConnection connection;
+        private readonly Settings settings;
 
-        /// <summary> ctor </summary>
+        /// <summary>Initializes a new instance of the <see cref="GraphQlService"/> class. </summary>
         public GraphQlService(IDbConnection connection, IOptions<Settings> settings)
         {
-            _connection = connection;
-            _settings = settings.Value;
+            this.connection = connection;
+            this.settings = settings.Value;
         }
 
         /// <summary> Execute graphQL query </summary>
@@ -41,16 +41,16 @@
                 {
                     data = new
                     {
-                        __schema = schema
-                    }
+                        __schema = schema,
+                    },
                 };
 
                 json = JsonConvert.SerializeObject(data);
             }
             else
             {
-                var sql = $"SELECT graphql.execute('{query.Query}', '{_settings.Schema}');";
-                json = await _connection.QueryFirstAsync<string>(sql);
+                var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}');";
+                json = await this.connection.QueryFirstAsync<string>(sql);
             }
 
             return json;
@@ -64,7 +64,7 @@
                 MutationType = new NamedItem("Mutation"),
                 SubscriptionType = new NamedItem("Subscription"),
                 QueryType = new NamedItem("Query"),
-                Types = await this.GetTypes()
+                Types = await this.GetTypes(),
             };
 
             return result;
@@ -80,23 +80,23 @@
             ret.Add(this.CreateQuery(fieldInfoList));
             ret.AddRange(this.CreateTables(fieldInfoList, foreignKeyInfoList));
             ret.AddRange(this.CreateFilters(fieldInfoList));
-            ret.AddRange(this.CreateAggregates(fieldInfoList, foreignKeyInfoList));
+            ret.AddRange(this.CreateAggregates(fieldInfoList));
 
             // Data types
             ret.Add(new Element
             {
                 Name = "Id",
                 Description = "The `Id` scalar type represents a unique identifier.",
-                Kind = Kinds.Scalar
+                Kind = Kinds.Scalar,
             });
 
-            foreach (var dataType in fieldInfoList.Select(x => x.DataType).Union(new[] {"integer"}).Distinct())
+            foreach (var dataType in fieldInfoList.Select(x => x.DataType).Union(new[] { "integer" }).Distinct())
             {
                 ret.Add(new Element
                 {
                     Name = dataType.ToTypeName(),
                     Description = $"The '{dataType}' scalar type.",
-                    Kind = Kinds.Scalar
+                    Kind = Kinds.Scalar,
                 });
             }
 
@@ -106,7 +106,7 @@
                 Name = "Mutation",
                 Interfaces = new List<Type>(),
                 Fields = new List<Field>(),
-                Kind = Kinds.Object
+                Kind = Kinds.Object,
             });
 
             ret.Add(new Element
@@ -114,7 +114,7 @@
                 Name = "Subscription",
                 Interfaces = new List<Type>(),
                 Fields = new List<Field>(),
-                Kind = Kinds.Object
+                Kind = Kinds.Object,
             });
 
             return ret;
@@ -125,9 +125,9 @@
             var sql = $@"SELECT gc.table_name AS ""TableName"", gc.column_name AS ""ColumnName"",
                           ic.data_type AS ""DataType"", ic.is_nullable='YES' AS ""IsNullable"" FROM graphql.schema_columns gc
                         LEFT JOIN information_schema.columns ic ON gc.table_name=ic.table_name AND gc.column_name=ic.column_name
-                          WHERE ic.table_schema::name = '{this._settings.Schema}'::name;";
+                          WHERE ic.table_schema::name = '{this.settings.Schema}'::name;";
 
-            return this._connection.QueryAsync<FieldInfo>(sql);
+            return this.connection.QueryAsync<FieldInfo>(sql);
         }
 
         private Task<IEnumerable<ForeignKeyInfo>> GetForeignKeyInfo()
@@ -136,7 +136,7 @@
                           foreign_table_name AS ""ForeignTableName"", foreign_column_name AS ""ForeignColumnName""
                         FROM graphql.schema_foreign_keys";
 
-            return this._connection.QueryAsync<ForeignKeyInfo>(sql);
+            return this.connection.QueryAsync<ForeignKeyInfo>(sql);
         }
 
         private Element CreateNode(List<FieldInfo> fieldInfoList)
@@ -151,11 +151,11 @@
                     {
                         Name = "id",
                         Description = "The id of the object.",
-                        Type = Type.CreateNonNull(Kinds.Scalar, "Id")
-                    }
+                        Type = Type.CreateNonNull(Kinds.Scalar, "Id"),
+                    },
                 },
                 Kind = Kinds.Interface,
-                PossibleTypes = new List<Type>()
+                PossibleTypes = new List<Type>(),
             };
 
             foreach (var tableName in fieldInfoList.Select(x => x.TableName).Distinct())
@@ -173,7 +173,7 @@
                 Name = "Query",
                 Interfaces = new List<Type>(),
                 Kind = Kinds.Object,
-                Fields = new List<Field>()
+                Fields = new List<Field>(),
             };
 
             foreach (var tableName in fieldInfoList.Select(x => x.TableName).Distinct())
@@ -187,47 +187,47 @@
                         new InputField
                         {
                             Name = "id",
-                            Type = new Type(Kinds.InputObject, "IdFilter")
+                            Type = new Type(Kinds.InputObject, "IdFilter"),
                         },
                         new InputField
                         {
                             Name = "filter",
-                            Type = new Type(Kinds.InputObject, $"{tableName}Filter")
+                            Type = new Type(Kinds.InputObject, $"{tableName}Filter"),
                         },
                         new InputField
                         {
                             Name = "orderBy",
-                            Type = new Type(Kinds.Enum, $"{tableName}OrderBy")
+                            Type = new Type(Kinds.Enum, $"{tableName}OrderBy"),
                         },
                         new InputField
                         {
                             Name = "orderByDescending",
-                            Type = new Type(Kinds.Enum, $"{tableName}OrderByDescending")
+                            Type = new Type(Kinds.Enum, $"{tableName}OrderByDescending"),
                         },                        new InputField
                         {
                             Name = "skip",
-                            Type = new Type(Kinds.InputObject, "Skip")
+                            Type = new Type(Kinds.InputObject, "Skip"),
                         },
                         new InputField
                         {
                             Name = "take",
-                            Type = new Type(Kinds.InputObject, "Take")
-                        }
-                    }
+                            Type = new Type(Kinds.InputObject, "Take"),
+                        },
+                    },
                 });
 
                 ret.Fields.Add(new Field
                 {
-                    Name = tableName + this._settings.AggPostfix,
-                    Type = new Type(Kinds.InputObject, tableName + this._settings.AggPostfix),
+                    Name = tableName + this.settings.AggPostfix,
+                    Type = new Type(Kinds.InputObject, tableName + this.settings.AggPostfix),
                     Args = new List<InputField>
                     {
                         new InputField
                         {
                             Name = "filter",
-                            Type = new Type(Kinds.InputObject, $"{tableName}Filter")
-                        }
-                    }
+                            Type = new Type(Kinds.InputObject, $"{tableName}Filter"),
+                        },
+                    },
                 });
             }
 
@@ -248,12 +248,12 @@
                     Description = table.Key,
                     Interfaces = new List<Type> { new Type(Kinds.Interface, "Node") },
                     Kind = Kinds.Object,
-                    Fields = new List<Field>()
+                    Fields = new List<Field>(),
                 };
 
                 foreach (var column in table)
                 {
-                    var dataTypeName = column.ColumnName.ToLowerInvariant() == this._settings.IdField.ToLowerInvariant()
+                    var dataTypeName = column.ColumnName.ToLowerInvariant() == this.settings.IdField.ToLowerInvariant()
                         ? "Id"
                         : column.DataType.ToTypeName();
 
@@ -262,7 +262,7 @@
                         Name = column.ColumnName,
                         Type = column.IsNullable
                             ? new Type(Kinds.Scalar, dataTypeName)
-                            : Type.CreateNonNull(Kinds.Scalar, dataTypeName)
+                            : Type.CreateNonNull(Kinds.Scalar, dataTypeName),
                     });
                 }
 
@@ -271,10 +271,10 @@
                 {
                     element.Fields.Add(new Field
                     {
-                        Name = singleLink.ColumnName.EndsWith(this._settings.IdPostfix)
-                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this._settings.IdPostfix.Length)
+                        Name = singleLink.ColumnName.EndsWith(this.settings.IdPostfix)
+                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
                             : singleLink.ColumnName,
-                        Type = new Type(Kinds.Object, singleLink.ForeignTableName)
+                        Type = new Type(Kinds.Object, singleLink.ForeignTableName),
                     });
                 }
 
@@ -290,43 +290,43 @@
                             new InputField
                             {
                                 Name = "filter",
-                                Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter")
+                                Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter"),
                             },
                             new InputField
                             {
                                 Name = "orderBy",
-                                Type = new Type(Kinds.Enum, $"{multipleLink.TableName}OrderBy")
+                                Type = new Type(Kinds.Enum, $"{multipleLink.TableName}OrderBy"),
                             },
                             new InputField
                             {
                                 Name = "orderByDescending",
-                                Type = new Type(Kinds.Enum, $"{multipleLink.TableName}OrderByDescending")
+                                Type = new Type(Kinds.Enum, $"{multipleLink.TableName}OrderByDescending"),
                             },
                             new InputField
                             {
                                 Name = "skip",
-                                Type = new Type(Kinds.InputObject, "Skip")
+                                Type = new Type(Kinds.InputObject, "Skip"),
                             },
                             new InputField
                             {
                                 Name = "take",
-                                Type = new Type(Kinds.InputObject, "Take")
-                            }
-                        }
+                                Type = new Type(Kinds.InputObject, "Take"),
+                            },
+                        },
                     });
 
                     element.Fields.Add(new Field
                     {
-                        Name = multipleLink.TableName + this._settings.AggPostfix,
-                        Type = new Type(Kinds.InputObject, multipleLink.TableName + this._settings.AggPostfix),
+                        Name = multipleLink.TableName + this.settings.AggPostfix,
+                        Type = new Type(Kinds.InputObject, multipleLink.TableName + this.settings.AggPostfix),
                         Args = new List<InputField>
                         {
                             new InputField
                             {
                                 Name = "filter",
-                                Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter")
-                            }
-                        }
+                                Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter"),
+                            },
+                        },
                     });
                 }
 
@@ -336,18 +336,18 @@
             return ret;
         }
 
-        private List<Element> CreateAggregates(List<FieldInfo> fieldInfoList, List<ForeignKeyInfo> foreignKeyList)
+        private List<Element> CreateAggregates(List<FieldInfo> fieldInfoList)
         {
             var ret = new List<Element>();
             var numericTypes = new[] { "integer", "bigint", "real", "double_precision", "numeric" };
 
             var aggFunctions = new[] { "max", "min", "avg", "sum" };
-            if (this._settings.AggPostfix[0] == '_')
+            if (this.settings.AggPostfix[0] == '_')
             {
                 aggFunctions = aggFunctions.Select(x => x + "_").ToArray();
             }
 
-            var distinctStart = "distinct" + ((this._settings.AggPostfix[0] == '_') ? "_" : string.Empty);
+            var distinctStart = "distinct" + ((this.settings.AggPostfix[0] == '_') ? "_" : string.Empty);
 
             var tables = fieldInfoList.GroupBy(x => x.TableName);
 
@@ -355,7 +355,7 @@
             {
                 var element = new Element
                 {
-                    Name = table.Key + this._settings.AggPostfix,
+                    Name = table.Key + this.settings.AggPostfix,
                     Description = "Aggregate function for " + table.Key,
                     Interfaces = new List<Type> { new Type(Kinds.Interface, "Node") },
                     Kind = Kinds.Object,
@@ -364,14 +364,14 @@
                         new Field
                         {
                             Name = "count",
-                            Type = new Type(Kinds.Scalar, "integer")
-                        }
-                    }
+                            Type = new Type(Kinds.Scalar, "integer"),
+                        },
+                    },
                 };
 
                 foreach (var column in table)
                 {
-                    if (column.ColumnName.ToLowerInvariant() == this._settings.IdField.ToLowerInvariant())
+                    if (column.ColumnName.ToLowerInvariant() == this.settings.IdField.ToLowerInvariant())
                     {
                         continue;
                     }
@@ -381,17 +381,17 @@
                     element.Fields.Add(new Field
                     {
                         Name = distinctStart + column.ColumnName,
-                        Type = Type.CreateList(Kinds.Object, dataTypeName)
+                        Type = Type.CreateList(Kinds.Object, dataTypeName),
                     });
 
-                    if (!column.ColumnName.EndsWith(this._settings.IdPostfix) && numericTypes.Contains(dataTypeName))
+                    if (!column.ColumnName.EndsWith(this.settings.IdPostfix) && numericTypes.Contains(dataTypeName))
                     {
                         foreach (var aggFunction in aggFunctions)
                         {
                             element.Fields.Add(new Field
                             {
                                 Name = aggFunction + column.ColumnName,
-                                Type = new Type(Kinds.Scalar, "integer")
+                                Type = new Type(Kinds.Scalar, "integer"),
                             });
                         }
                     }
@@ -417,9 +417,9 @@
                         {
                             Name = "id",
                             Description = "The id of the object.",
-                            Type = Type.CreateNonNull(Kinds.Scalar, "Id")
-                        }
-                    }
+                            Type = Type.CreateNonNull(Kinds.Scalar, "Id"),
+                        },
+                    },
                 },
                 new Element
                 {
@@ -429,8 +429,8 @@
                     {
                         Name = x,
                         Description = $"'{x}' operator.",
-                        Type = Type.CreateNonNull(Kinds.Scalar, "text")
-                    }).ToList()
+                        Type = Type.CreateNonNull(Kinds.Scalar, "text"),
+                    }).ToList(),
                 },
                 new Element
                 {
@@ -442,9 +442,9 @@
                         {
                             Name = "skip",
                             Description = "Number of rows to skip.",
-                            Type = Type.CreateNonNull(Kinds.Scalar, "Skip")
-                        }
-                    }
+                            Type = Type.CreateNonNull(Kinds.Scalar, "Skip"),
+                        },
+                    },
                 },
                 new Element
                 {
@@ -456,9 +456,9 @@
                         {
                             Name = "take",
                             Description = "Number of rows to take.",
-                            Type = Type.CreateNonNull(Kinds.Scalar, "Take")
-                        }
-                    }
+                            Type = Type.CreateNonNull(Kinds.Scalar, "Take"),
+                        },
+                    },
                 },
             };
 
@@ -474,8 +474,8 @@
                     {
                         Name = x.ColumnName,
                         Description = x.ColumnName,
-                        Type = Type.CreateNonNull(Kinds.Object, "OperatorFilter")
-                    }).ToList()
+                        Type = Type.CreateNonNull(Kinds.Object, "OperatorFilter"),
+                    }).ToList(),
                 });
 
                 ret.Add(new Element
@@ -484,8 +484,8 @@
                     Kind = Kinds.Enum,
                     EnumValues = table.Select(x => new EnumValue()
                     {
-                        Name = x.ColumnName
-                    }).ToList()
+                        Name = x.ColumnName,
+                    }).ToList(),
                 });
 
                 ret.Add(new Element
@@ -494,8 +494,8 @@
                     Kind = Kinds.Enum,
                     EnumValues = table.Select(x => new EnumValue()
                     {
-                        Name = x.ColumnName
-                    }).ToList()
+                        Name = x.ColumnName,
+                    }).ToList(),
                 });
             }
 
