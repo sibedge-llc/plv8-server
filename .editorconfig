@@ -1,0 +1,2200 @@
+root = true
+
+[*]
+end_of_line = CRLF
+
+[*.{cs,vb,cpp,c,h}]
+indent_size = 4
+indent_style = space
+trim_trailing_whitespace = true
+
+dotnet_diagnostic.AD0001.severity = error
+
+dotnet_diagnostic.Async001.severity = error
+
+dotnet_diagnostic.Async002.severity = error
+
+dotnet_diagnostic.Async003.severity = error
+
+dotnet_diagnostic.Async004.severity = error
+
+dotnet_diagnostic.Async005.severity = error
+
+dotnet_diagnostic.Async006.severity = error
+
+dotnet_diagnostic.C26100.severity = error
+
+dotnet_diagnostic.C26101.severity = error
+
+dotnet_diagnostic.C26105.severity = error
+
+dotnet_diagnostic.C26110.severity = error
+
+dotnet_diagnostic.C26111.severity = error
+
+dotnet_diagnostic.C26112.severity = error
+
+dotnet_diagnostic.C26115.severity = error
+
+dotnet_diagnostic.C26116.severity = error
+
+dotnet_diagnostic.C26117.severity = error
+
+dotnet_diagnostic.C26130.severity = error
+
+dotnet_diagnostic.C26135.severity = error
+
+dotnet_diagnostic.C26140.severity = error
+
+dotnet_diagnostic.C26160.severity = error
+
+dotnet_diagnostic.C26165.severity = error
+
+dotnet_diagnostic.C26166.severity = error
+
+dotnet_diagnostic.C26167.severity = error
+
+dotnet_diagnostic.C26400.severity = error
+
+dotnet_diagnostic.C26401.severity = error
+
+dotnet_diagnostic.C26402.severity = error
+
+dotnet_diagnostic.C26403.severity = error
+
+dotnet_diagnostic.C26404.severity = error
+
+dotnet_diagnostic.C26405.severity = error
+
+dotnet_diagnostic.C26406.severity = error
+
+dotnet_diagnostic.C26407.severity = error
+
+dotnet_diagnostic.C26408.severity = error
+
+dotnet_diagnostic.C26409.severity = error
+
+dotnet_diagnostic.C26410.severity = error
+
+dotnet_diagnostic.C26411.severity = error
+
+dotnet_diagnostic.C26414.severity = error
+
+dotnet_diagnostic.C26415.severity = error
+
+dotnet_diagnostic.C26416.severity = error
+
+dotnet_diagnostic.C26417.severity = error
+
+dotnet_diagnostic.C26418.severity = error
+
+dotnet_diagnostic.C26426.severity = error
+
+dotnet_diagnostic.C26427.severity = error
+
+dotnet_diagnostic.C26429.severity = error
+
+dotnet_diagnostic.C26430.severity = error
+
+dotnet_diagnostic.C26431.severity = error
+
+dotnet_diagnostic.C26432.severity = error
+
+dotnet_diagnostic.C26433.severity = error
+
+dotnet_diagnostic.C26434.severity = error
+
+dotnet_diagnostic.C26435.severity = error
+
+dotnet_diagnostic.C26436.severity = error
+
+dotnet_diagnostic.C26437.severity = error
+
+dotnet_diagnostic.C26438.severity = error
+
+dotnet_diagnostic.C26439.severity = error
+
+dotnet_diagnostic.C26440.severity = error
+
+dotnet_diagnostic.C26441.severity = error
+
+dotnet_diagnostic.C26443.severity = error
+
+dotnet_diagnostic.C26444.severity = error
+
+dotnet_diagnostic.C26445.severity = error
+
+dotnet_diagnostic.C26446.severity = error
+
+dotnet_diagnostic.C26447.severity = error
+
+dotnet_diagnostic.C26448.severity = error
+
+dotnet_diagnostic.C26449.severity = error
+
+dotnet_diagnostic.C26450.severity = error
+
+dotnet_diagnostic.C26451.severity = error
+
+dotnet_diagnostic.C26452.severity = error
+
+dotnet_diagnostic.C26453.severity = error
+
+dotnet_diagnostic.C26454.severity = error
+
+dotnet_diagnostic.C26459.severity = error
+
+dotnet_diagnostic.C26460.severity = error
+
+dotnet_diagnostic.C26461.severity = error
+
+dotnet_diagnostic.C26462.severity = error
+
+dotnet_diagnostic.C26463.severity = error
+
+dotnet_diagnostic.C26464.severity = error
+
+dotnet_diagnostic.C26465.severity = error
+
+dotnet_diagnostic.C26466.severity = error
+
+dotnet_diagnostic.C26471.severity = error
+
+dotnet_diagnostic.C26472.severity = error
+
+dotnet_diagnostic.C26473.severity = error
+
+dotnet_diagnostic.C26474.severity = error
+
+dotnet_diagnostic.C26475.severity = error
+
+dotnet_diagnostic.C26476.severity = error
+
+dotnet_diagnostic.C26477.severity = error
+
+dotnet_diagnostic.C26481.severity = error
+
+dotnet_diagnostic.C26482.severity = error
+
+dotnet_diagnostic.C26483.severity = error
+
+dotnet_diagnostic.C26485.severity = error
+
+dotnet_diagnostic.C26486.severity = error
+
+dotnet_diagnostic.C26487.severity = error
+
+dotnet_diagnostic.C26489.severity = error
+
+dotnet_diagnostic.C26490.severity = error
+
+dotnet_diagnostic.C26491.severity = error
+
+dotnet_diagnostic.C26492.severity = error
+
+dotnet_diagnostic.C26493.severity = error
+
+dotnet_diagnostic.C26494.severity = error
+
+dotnet_diagnostic.C26495.severity = error
+
+dotnet_diagnostic.C26496.severity = error
+
+dotnet_diagnostic.C26497.severity = error
+
+dotnet_diagnostic.C26498.severity = error
+
+dotnet_diagnostic.C28020.severity = error
+
+dotnet_diagnostic.C28021.severity = error
+
+dotnet_diagnostic.C28022.severity = error
+
+dotnet_diagnostic.C28023.severity = error
+
+dotnet_diagnostic.C28024.severity = error
+
+dotnet_diagnostic.C28039.severity = error
+
+dotnet_diagnostic.C28101.severity = error
+
+dotnet_diagnostic.C28103.severity = error
+
+dotnet_diagnostic.C28104.severity = error
+
+dotnet_diagnostic.C28105.severity = error
+
+dotnet_diagnostic.C28106.severity = error
+
+dotnet_diagnostic.C28107.severity = error
+
+dotnet_diagnostic.C28108.severity = error
+
+dotnet_diagnostic.C28109.severity = error
+
+dotnet_diagnostic.C28110.severity = error
+
+dotnet_diagnostic.C28111.severity = error
+
+dotnet_diagnostic.C28112.severity = error
+
+dotnet_diagnostic.C28113.severity = error
+
+dotnet_diagnostic.C28114.severity = error
+
+dotnet_diagnostic.C28120.severity = error
+
+dotnet_diagnostic.C28121.severity = error
+
+dotnet_diagnostic.C28122.severity = error
+
+dotnet_diagnostic.C28123.severity = error
+
+dotnet_diagnostic.C28124.severity = error
+
+dotnet_diagnostic.C28125.severity = error
+
+dotnet_diagnostic.C28126.severity = error
+
+dotnet_diagnostic.C28127.severity = error
+
+dotnet_diagnostic.C28128.severity = error
+
+dotnet_diagnostic.C28129.severity = error
+
+dotnet_diagnostic.C28131.severity = error
+
+dotnet_diagnostic.C28132.severity = error
+
+dotnet_diagnostic.C28133.severity = error
+
+dotnet_diagnostic.C28134.severity = error
+
+dotnet_diagnostic.C28135.severity = error
+
+dotnet_diagnostic.C28137.severity = error
+
+dotnet_diagnostic.C28138.severity = error
+
+dotnet_diagnostic.C28141.severity = error
+
+dotnet_diagnostic.C28143.severity = error
+
+dotnet_diagnostic.C28144.severity = error
+
+dotnet_diagnostic.C28145.severity = error
+
+dotnet_diagnostic.C28146.severity = error
+
+dotnet_diagnostic.C28147.severity = error
+
+dotnet_diagnostic.C28150.severity = error
+
+dotnet_diagnostic.C28151.severity = error
+
+dotnet_diagnostic.C28152.severity = error
+
+dotnet_diagnostic.C28153.severity = error
+
+dotnet_diagnostic.C28156.severity = error
+
+dotnet_diagnostic.C28157.severity = error
+
+dotnet_diagnostic.C28158.severity = error
+
+dotnet_diagnostic.C28159.severity = error
+
+dotnet_diagnostic.C28160.severity = error
+
+dotnet_diagnostic.C28161.severity = error
+
+dotnet_diagnostic.C28162.severity = error
+
+dotnet_diagnostic.C28163.severity = error
+
+dotnet_diagnostic.C28164.severity = error
+
+dotnet_diagnostic.C28165.severity = error
+
+dotnet_diagnostic.C28166.severity = error
+
+dotnet_diagnostic.C28167.severity = error
+
+dotnet_diagnostic.C28168.severity = error
+
+dotnet_diagnostic.C28169.severity = error
+
+dotnet_diagnostic.C28170.severity = error
+
+dotnet_diagnostic.C28171.severity = error
+
+dotnet_diagnostic.C28172.severity = error
+
+dotnet_diagnostic.C28173.severity = error
+
+dotnet_diagnostic.C28175.severity = error
+
+dotnet_diagnostic.C28176.severity = error
+
+dotnet_diagnostic.C28182.severity = error
+
+dotnet_diagnostic.C28183.severity = error
+
+dotnet_diagnostic.C28193.severity = error
+
+dotnet_diagnostic.C28194.severity = error
+
+dotnet_diagnostic.C28195.severity = error
+
+dotnet_diagnostic.C28196.severity = error
+
+dotnet_diagnostic.C28197.severity = error
+
+dotnet_diagnostic.C28198.severity = error
+
+dotnet_diagnostic.C28199.severity = error
+
+dotnet_diagnostic.C28202.severity = error
+
+dotnet_diagnostic.C28203.severity = error
+
+dotnet_diagnostic.C28204.severity = error
+
+dotnet_diagnostic.C28205.severity = error
+
+dotnet_diagnostic.C28206.severity = error
+
+dotnet_diagnostic.C28207.severity = error
+
+dotnet_diagnostic.C28208.severity = error
+
+dotnet_diagnostic.C28209.severity = error
+
+dotnet_diagnostic.C28210.severity = error
+
+dotnet_diagnostic.C28211.severity = error
+
+dotnet_diagnostic.C28212.severity = error
+
+dotnet_diagnostic.C28213.severity = error
+
+dotnet_diagnostic.C28214.severity = error
+
+dotnet_diagnostic.C28215.severity = error
+
+dotnet_diagnostic.C28216.severity = error
+
+dotnet_diagnostic.C28217.severity = error
+
+dotnet_diagnostic.C28218.severity = error
+
+dotnet_diagnostic.C28219.severity = error
+
+dotnet_diagnostic.C28220.severity = error
+
+dotnet_diagnostic.C28221.severity = error
+
+dotnet_diagnostic.C28222.severity = error
+
+dotnet_diagnostic.C28223.severity = error
+
+dotnet_diagnostic.C28224.severity = error
+
+dotnet_diagnostic.C28225.severity = error
+
+dotnet_diagnostic.C28226.severity = error
+
+dotnet_diagnostic.C28227.severity = error
+
+dotnet_diagnostic.C28228.severity = error
+
+dotnet_diagnostic.C28229.severity = error
+
+dotnet_diagnostic.C28230.severity = error
+
+dotnet_diagnostic.C28231.severity = error
+
+dotnet_diagnostic.C28232.severity = error
+
+dotnet_diagnostic.C28233.severity = error
+
+dotnet_diagnostic.C28234.severity = error
+
+dotnet_diagnostic.C28235.severity = error
+
+dotnet_diagnostic.C28236.severity = error
+
+dotnet_diagnostic.C28237.severity = error
+
+dotnet_diagnostic.C28238.severity = error
+
+dotnet_diagnostic.C28239.severity = error
+
+dotnet_diagnostic.C28240.severity = error
+
+dotnet_diagnostic.C28241.severity = error
+
+dotnet_diagnostic.C28243.severity = error
+
+dotnet_diagnostic.C28244.severity = error
+
+dotnet_diagnostic.C28245.severity = error
+
+dotnet_diagnostic.C28246.severity = error
+
+dotnet_diagnostic.C28250.severity = error
+
+dotnet_diagnostic.C28251.severity = error
+
+dotnet_diagnostic.C28252.severity = error
+
+dotnet_diagnostic.C28253.severity = error
+
+dotnet_diagnostic.C28254.severity = error
+
+dotnet_diagnostic.C28260.severity = error
+
+dotnet_diagnostic.C28262.severity = error
+
+dotnet_diagnostic.C28263.severity = error
+
+dotnet_diagnostic.C28266.severity = error
+
+dotnet_diagnostic.C28267.severity = error
+
+dotnet_diagnostic.C28272.severity = error
+
+dotnet_diagnostic.C28273.severity = error
+
+dotnet_diagnostic.C28275.severity = error
+
+dotnet_diagnostic.C28278.severity = error
+
+dotnet_diagnostic.C28279.severity = error
+
+dotnet_diagnostic.C28280.severity = error
+
+dotnet_diagnostic.C28282.severity = error
+
+dotnet_diagnostic.C28283.severity = error
+
+dotnet_diagnostic.C28284.severity = error
+
+dotnet_diagnostic.C28285.severity = error
+
+dotnet_diagnostic.C28286.severity = error
+
+dotnet_diagnostic.C28287.severity = error
+
+dotnet_diagnostic.C28288.severity = error
+
+dotnet_diagnostic.C28289.severity = error
+
+dotnet_diagnostic.C28290.severity = error
+
+dotnet_diagnostic.C28291.severity = error
+
+dotnet_diagnostic.C28300.severity = error
+
+dotnet_diagnostic.C28301.severity = error
+
+dotnet_diagnostic.C28302.severity = error
+
+dotnet_diagnostic.C28303.severity = error
+
+dotnet_diagnostic.C28304.severity = error
+
+dotnet_diagnostic.C28305.severity = error
+
+dotnet_diagnostic.C28306.severity = error
+
+dotnet_diagnostic.C28307.severity = error
+
+dotnet_diagnostic.C28308.severity = error
+
+dotnet_diagnostic.C28309.severity = error
+
+dotnet_diagnostic.C28350.severity = error
+
+dotnet_diagnostic.C28351.severity = error
+
+dotnet_diagnostic.C28601.severity = error
+
+dotnet_diagnostic.C28602.severity = error
+
+dotnet_diagnostic.C28604.severity = error
+
+dotnet_diagnostic.C28615.severity = error
+
+dotnet_diagnostic.C28616.severity = error
+
+dotnet_diagnostic.C28617.severity = error
+
+dotnet_diagnostic.C28623.severity = error
+
+dotnet_diagnostic.C28624.severity = error
+
+dotnet_diagnostic.C28625.severity = error
+
+dotnet_diagnostic.C28636.severity = error
+
+dotnet_diagnostic.C28637.severity = error
+
+dotnet_diagnostic.C28638.severity = error
+
+dotnet_diagnostic.C28639.severity = error
+
+dotnet_diagnostic.C28640.severity = error
+
+dotnet_diagnostic.C28645.severity = error
+
+dotnet_diagnostic.C28648.severity = error
+
+dotnet_diagnostic.C28649.severity = error
+
+dotnet_diagnostic.C28650.severity = error
+
+dotnet_diagnostic.C28714.severity = error
+
+dotnet_diagnostic.C28715.severity = error
+
+dotnet_diagnostic.C28716.severity = error
+
+dotnet_diagnostic.C28717.severity = error
+
+dotnet_diagnostic.C28719.severity = error
+
+dotnet_diagnostic.C28720.severity = error
+
+dotnet_diagnostic.C28721.severity = error
+
+dotnet_diagnostic.C28726.severity = error
+
+dotnet_diagnostic.C28727.severity = error
+
+dotnet_diagnostic.C28730.severity = error
+
+dotnet_diagnostic.C28735.severity = error
+
+dotnet_diagnostic.C28736.severity = error
+
+dotnet_diagnostic.C28750.severity = error
+
+dotnet_diagnostic.C28751.severity = error
+
+dotnet_diagnostic.C6001.severity = error
+
+dotnet_diagnostic.C6011.severity = error
+
+dotnet_diagnostic.C6014.severity = error
+
+dotnet_diagnostic.C6029.severity = error
+
+dotnet_diagnostic.C6031.severity = error
+
+dotnet_diagnostic.C6053.severity = error
+
+dotnet_diagnostic.C6054.severity = error
+
+dotnet_diagnostic.C6059.severity = error
+
+dotnet_diagnostic.C6063.severity = error
+
+dotnet_diagnostic.C6064.severity = error
+
+dotnet_diagnostic.C6066.severity = error
+
+dotnet_diagnostic.C6067.severity = error
+
+dotnet_diagnostic.C6101.severity = error
+
+dotnet_diagnostic.C6200.severity = error
+
+dotnet_diagnostic.C6201.severity = error
+
+dotnet_diagnostic.C6211.severity = error
+
+dotnet_diagnostic.C6214.severity = error
+
+dotnet_diagnostic.C6215.severity = error
+
+dotnet_diagnostic.C6216.severity = error
+
+dotnet_diagnostic.C6217.severity = error
+
+dotnet_diagnostic.C6219.severity = error
+
+dotnet_diagnostic.C6220.severity = error
+
+dotnet_diagnostic.C6221.severity = error
+
+dotnet_diagnostic.C6225.severity = error
+
+dotnet_diagnostic.C6226.severity = error
+
+dotnet_diagnostic.C6230.severity = error
+
+dotnet_diagnostic.C6235.severity = error
+
+dotnet_diagnostic.C6236.severity = error
+
+dotnet_diagnostic.C6237.severity = error
+
+dotnet_diagnostic.C6239.severity = error
+
+dotnet_diagnostic.C6240.severity = error
+
+dotnet_diagnostic.C6242.severity = error
+
+dotnet_diagnostic.C6244.severity = error
+
+dotnet_diagnostic.C6246.severity = error
+
+dotnet_diagnostic.C6248.severity = error
+
+dotnet_diagnostic.C6250.severity = error
+
+dotnet_diagnostic.C6255.severity = error
+
+dotnet_diagnostic.C6258.severity = error
+
+dotnet_diagnostic.C6259.severity = error
+
+dotnet_diagnostic.C6260.severity = error
+
+dotnet_diagnostic.C6262.severity = error
+
+dotnet_diagnostic.C6263.severity = error
+
+dotnet_diagnostic.C6268.severity = error
+
+dotnet_diagnostic.C6269.severity = error
+
+dotnet_diagnostic.C6270.severity = error
+
+dotnet_diagnostic.C6271.severity = error
+
+dotnet_diagnostic.C6272.severity = error
+
+dotnet_diagnostic.C6273.severity = error
+
+dotnet_diagnostic.C6274.severity = error
+
+dotnet_diagnostic.C6276.severity = error
+
+dotnet_diagnostic.C6277.severity = error
+
+dotnet_diagnostic.C6278.severity = error
+
+dotnet_diagnostic.C6279.severity = error
+
+dotnet_diagnostic.C6280.severity = error
+
+dotnet_diagnostic.C6281.severity = error
+
+dotnet_diagnostic.C6282.severity = error
+
+dotnet_diagnostic.C6283.severity = error
+
+dotnet_diagnostic.C6284.severity = error
+
+dotnet_diagnostic.C6285.severity = error
+
+dotnet_diagnostic.C6286.severity = error
+
+dotnet_diagnostic.C6287.severity = error
+
+dotnet_diagnostic.C6288.severity = error
+
+dotnet_diagnostic.C6289.severity = error
+
+dotnet_diagnostic.C6290.severity = error
+
+dotnet_diagnostic.C6291.severity = error
+
+dotnet_diagnostic.C6292.severity = error
+
+dotnet_diagnostic.C6293.severity = error
+
+dotnet_diagnostic.C6294.severity = error
+
+dotnet_diagnostic.C6295.severity = error
+
+dotnet_diagnostic.C6296.severity = error
+
+dotnet_diagnostic.C6297.severity = error
+
+dotnet_diagnostic.C6298.severity = error
+
+dotnet_diagnostic.C6299.severity = error
+
+dotnet_diagnostic.C6302.severity = error
+
+dotnet_diagnostic.C6303.severity = error
+
+dotnet_diagnostic.C6305.severity = error
+
+dotnet_diagnostic.C6306.severity = error
+
+dotnet_diagnostic.C6308.severity = error
+
+dotnet_diagnostic.C6310.severity = error
+
+dotnet_diagnostic.C6312.severity = error
+
+dotnet_diagnostic.C6313.severity = error
+
+dotnet_diagnostic.C6314.severity = error
+
+dotnet_diagnostic.C6315.severity = error
+
+dotnet_diagnostic.C6316.severity = error
+
+dotnet_diagnostic.C6317.severity = error
+
+dotnet_diagnostic.C6318.severity = error
+
+dotnet_diagnostic.C6319.severity = error
+
+dotnet_diagnostic.C6320.severity = error
+
+dotnet_diagnostic.C6322.severity = error
+
+dotnet_diagnostic.C6323.severity = error
+
+dotnet_diagnostic.C6324.severity = error
+
+dotnet_diagnostic.C6326.severity = error
+
+dotnet_diagnostic.C6328.severity = error
+
+dotnet_diagnostic.C6329.severity = error
+
+dotnet_diagnostic.C6330.severity = error
+
+dotnet_diagnostic.C6331.severity = error
+
+dotnet_diagnostic.C6332.severity = error
+
+dotnet_diagnostic.C6333.severity = error
+
+dotnet_diagnostic.C6334.severity = error
+
+dotnet_diagnostic.C6335.severity = error
+
+dotnet_diagnostic.C6336.severity = error
+
+dotnet_diagnostic.C6340.severity = error
+
+dotnet_diagnostic.C6381.severity = error
+
+dotnet_diagnostic.C6383.severity = error
+
+dotnet_diagnostic.C6384.severity = error
+
+dotnet_diagnostic.C6385.severity = error
+
+dotnet_diagnostic.C6386.severity = error
+
+dotnet_diagnostic.C6387.severity = error
+
+dotnet_diagnostic.C6388.severity = error
+
+dotnet_diagnostic.C6400.severity = error
+
+dotnet_diagnostic.C6401.severity = error
+
+dotnet_diagnostic.C6411.severity = error
+
+dotnet_diagnostic.C6412.severity = error
+
+dotnet_diagnostic.C6500.severity = error
+
+dotnet_diagnostic.C6501.severity = error
+
+dotnet_diagnostic.C6503.severity = error
+
+dotnet_diagnostic.C6504.severity = error
+
+dotnet_diagnostic.C6505.severity = error
+
+dotnet_diagnostic.C6506.severity = error
+
+dotnet_diagnostic.C6508.severity = error
+
+dotnet_diagnostic.C6509.severity = error
+
+dotnet_diagnostic.C6510.severity = error
+
+dotnet_diagnostic.C6511.severity = error
+
+dotnet_diagnostic.C6513.severity = error
+
+dotnet_diagnostic.C6514.severity = error
+
+dotnet_diagnostic.C6515.severity = error
+
+dotnet_diagnostic.C6516.severity = error
+
+dotnet_diagnostic.C6517.severity = error
+
+dotnet_diagnostic.C6518.severity = error
+
+dotnet_diagnostic.C6522.severity = error
+
+dotnet_diagnostic.C6525.severity = error
+
+dotnet_diagnostic.C6527.severity = error
+
+dotnet_diagnostic.C6530.severity = error
+
+dotnet_diagnostic.C6540.severity = error
+
+dotnet_diagnostic.C6551.severity = error
+
+dotnet_diagnostic.C6552.severity = error
+
+dotnet_diagnostic.C6701.severity = error
+
+dotnet_diagnostic.C6702.severity = error
+
+dotnet_diagnostic.C6703.severity = error
+
+dotnet_diagnostic.C6704.severity = error
+
+dotnet_diagnostic.C6705.severity = error
+
+dotnet_diagnostic.C6706.severity = error
+
+dotnet_diagnostic.C6707.severity = error
+
+dotnet_diagnostic.C6993.severity = error
+
+dotnet_diagnostic.C6995.severity = error
+
+dotnet_diagnostic.C6997.severity = error
+
+dotnet_diagnostic.CA1000.severity = error
+
+dotnet_diagnostic.CA1001.severity = error
+
+dotnet_diagnostic.CA1002.severity = error
+
+dotnet_diagnostic.CA1003.severity = error
+
+dotnet_diagnostic.CA1004.severity = error
+
+dotnet_diagnostic.CA1005.severity = error
+
+dotnet_diagnostic.CA1006.severity = error
+
+dotnet_diagnostic.CA1007.severity = error
+
+dotnet_diagnostic.CA1008.severity = warning
+
+dotnet_diagnostic.CA1009.severity = error
+
+dotnet_diagnostic.CA1010.severity = error
+
+dotnet_diagnostic.CA1011.severity = error
+
+dotnet_diagnostic.CA1012.severity = error
+
+dotnet_diagnostic.CA1013.severity = error
+
+dotnet_diagnostic.CA1014.severity = none
+
+dotnet_diagnostic.CA1016.severity = error
+
+dotnet_diagnostic.CA1017.severity = error
+
+dotnet_diagnostic.CA1018.severity = error
+
+dotnet_diagnostic.CA1019.severity = error
+
+dotnet_diagnostic.CA1020.severity = none
+
+dotnet_diagnostic.CA1021.severity = error
+
+dotnet_diagnostic.CA1023.severity = error
+
+dotnet_diagnostic.CA1024.severity = none
+
+dotnet_diagnostic.CA1025.severity = error
+
+dotnet_diagnostic.CA1026.severity = error
+
+dotnet_diagnostic.CA1027.severity = error
+
+dotnet_diagnostic.CA1028.severity = error
+
+dotnet_diagnostic.CA1030.severity = error
+
+dotnet_diagnostic.CA1031.severity = warning
+
+dotnet_diagnostic.CA1032.severity = error
+
+dotnet_diagnostic.CA1033.severity = error
+
+dotnet_diagnostic.CA1034.severity = error
+
+dotnet_diagnostic.CA1035.severity = error
+
+dotnet_diagnostic.CA1036.severity = error
+
+dotnet_diagnostic.CA1038.severity = error
+
+dotnet_diagnostic.CA1039.severity = error
+
+dotnet_diagnostic.CA1040.severity = error
+
+dotnet_diagnostic.CA1041.severity = error
+
+dotnet_diagnostic.CA1043.severity = error
+
+dotnet_diagnostic.CA1044.severity = error
+
+dotnet_diagnostic.CA1045.severity = error
+
+dotnet_diagnostic.CA1046.severity = error
+
+dotnet_diagnostic.CA1047.severity = error
+
+dotnet_diagnostic.CA1048.severity = error
+
+dotnet_diagnostic.CA1049.severity = error
+
+dotnet_diagnostic.CA1050.severity = error
+
+dotnet_diagnostic.CA1051.severity = error
+
+dotnet_diagnostic.CA1053.severity = error
+
+dotnet_diagnostic.CA1054.severity = warning
+
+dotnet_diagnostic.CA1055.severity = error
+
+dotnet_diagnostic.CA1056.severity = warning
+
+dotnet_diagnostic.CA1057.severity = error
+
+dotnet_diagnostic.CA1058.severity = error
+
+dotnet_diagnostic.CA1059.severity = error
+
+dotnet_diagnostic.CA1060.severity = error
+
+dotnet_diagnostic.CA1061.severity = error
+
+dotnet_diagnostic.CA1062.severity = none
+
+dotnet_diagnostic.CA1063.severity = none
+
+dotnet_diagnostic.CA1064.severity = error
+
+dotnet_diagnostic.CA1065.severity = error
+
+dotnet_diagnostic.CA1066.severity = error
+
+dotnet_diagnostic.CA1067.severity = error
+
+dotnet_diagnostic.CA1068.severity = error
+
+dotnet_diagnostic.CA1200.severity = error
+
+dotnet_diagnostic.CA1300.severity = error
+
+dotnet_diagnostic.CA1301.severity = error
+
+dotnet_diagnostic.CA1302.severity = error
+
+dotnet_diagnostic.CA1303.severity = warning
+
+dotnet_diagnostic.CA1304.severity = warning
+
+dotnet_diagnostic.CA1305.severity = error
+
+dotnet_diagnostic.CA1306.severity = error
+
+dotnet_diagnostic.CA1307.severity = error
+
+dotnet_diagnostic.CA1400.severity = error
+
+dotnet_diagnostic.CA1401.severity = error
+
+dotnet_diagnostic.CA1402.severity = error
+
+dotnet_diagnostic.CA1403.severity = error
+
+dotnet_diagnostic.CA1404.severity = error
+
+dotnet_diagnostic.CA1405.severity = error
+
+dotnet_diagnostic.CA1406.severity = error
+
+dotnet_diagnostic.CA1407.severity = error
+
+dotnet_diagnostic.CA1408.severity = error
+
+dotnet_diagnostic.CA1409.severity = error
+
+dotnet_diagnostic.CA1410.severity = error
+
+dotnet_diagnostic.CA1411.severity = error
+
+dotnet_diagnostic.CA1412.severity = error
+
+dotnet_diagnostic.CA1413.severity = error
+
+dotnet_diagnostic.CA1414.severity = error
+
+dotnet_diagnostic.CA1415.severity = error
+
+dotnet_diagnostic.CA1500.severity = error
+
+dotnet_diagnostic.CA1501.severity = warning
+
+dotnet_diagnostic.CA1502.severity = error
+
+dotnet_diagnostic.CA1504.severity = error
+
+dotnet_diagnostic.CA1505.severity = error
+
+dotnet_diagnostic.CA1506.severity = error
+
+dotnet_diagnostic.CA1507.severity = error
+
+dotnet_diagnostic.CA1600.severity = error
+
+dotnet_diagnostic.CA1601.severity = error
+
+dotnet_diagnostic.CA1700.severity = error
+
+dotnet_diagnostic.CA1701.severity = error
+
+dotnet_diagnostic.CA1702.severity = error
+
+dotnet_diagnostic.CA1703.severity = error
+
+dotnet_diagnostic.CA1704.severity = error
+
+dotnet_diagnostic.CA1707.severity = error
+
+dotnet_diagnostic.CA1708.severity = error
+
+dotnet_diagnostic.CA1709.severity = error
+
+dotnet_diagnostic.CA1710.severity = error
+
+dotnet_diagnostic.CA1711.severity = error
+
+dotnet_diagnostic.CA1712.severity = error
+
+dotnet_diagnostic.CA1713.severity = error
+
+dotnet_diagnostic.CA1714.severity = error
+
+dotnet_diagnostic.CA1715.severity = error
+
+dotnet_diagnostic.CA1716.severity = error
+
+dotnet_diagnostic.CA1717.severity = error
+
+dotnet_diagnostic.CA1719.severity = error
+
+dotnet_diagnostic.CA1720.severity = error
+
+dotnet_diagnostic.CA1721.severity = error
+
+dotnet_diagnostic.CA1722.severity = error
+
+dotnet_diagnostic.CA1724.severity = warning
+
+dotnet_diagnostic.CA1725.severity = error
+
+dotnet_diagnostic.CA1726.severity = error
+
+dotnet_diagnostic.CA1800.severity = error
+
+dotnet_diagnostic.CA1801.severity = error
+
+dotnet_diagnostic.CA1802.severity = error
+
+dotnet_diagnostic.CA1804.severity = error
+
+dotnet_diagnostic.CA1806.severity = error
+
+dotnet_diagnostic.CA1807.severity = error
+
+dotnet_diagnostic.CA1809.severity = error
+
+dotnet_diagnostic.CA1810.severity = none
+
+dotnet_diagnostic.CA1811.severity = error
+
+dotnet_diagnostic.CA1812.severity = warning
+
+dotnet_diagnostic.CA1813.severity = error
+
+dotnet_diagnostic.CA1814.severity = error
+
+dotnet_diagnostic.CA1815.severity = warning
+
+dotnet_diagnostic.CA1816.severity = none
+
+dotnet_diagnostic.CA1819.severity = error
+
+dotnet_diagnostic.CA1820.severity = error
+
+dotnet_diagnostic.CA1821.severity = error
+
+dotnet_diagnostic.CA1823.severity = error
+
+dotnet_diagnostic.CA1824.severity = error
+
+dotnet_diagnostic.CA1825.severity = error
+
+dotnet_diagnostic.CA1826.severity = error
+
+dotnet_diagnostic.CA1900.severity = error
+
+dotnet_diagnostic.CA1901.severity = error
+
+dotnet_diagnostic.CA1903.severity = error
+
+dotnet_diagnostic.CA2000.severity = warning
+
+dotnet_diagnostic.CA2001.severity = error
+
+dotnet_diagnostic.CA2002.severity = error
+
+dotnet_diagnostic.CA2003.severity = error
+
+dotnet_diagnostic.CA2004.severity = error
+
+dotnet_diagnostic.CA2006.severity = error
+
+dotnet_diagnostic.CA2008.severity = error
+
+dotnet_diagnostic.CA2009.severity = error
+
+dotnet_diagnostic.CA2010.severity = error
+
+dotnet_diagnostic.CA2100.severity = error
+
+dotnet_diagnostic.CA2101.severity = error
+
+dotnet_diagnostic.CA2102.severity = error
+
+dotnet_diagnostic.CA2103.severity = error
+
+dotnet_diagnostic.CA2104.severity = error
+
+dotnet_diagnostic.CA2105.severity = error
+
+dotnet_diagnostic.CA2106.severity = error
+
+dotnet_diagnostic.CA2107.severity = error
+
+dotnet_diagnostic.CA2108.severity = error
+
+dotnet_diagnostic.CA2109.severity = error
+
+dotnet_diagnostic.CA2111.severity = error
+
+dotnet_diagnostic.CA2112.severity = error
+
+dotnet_diagnostic.CA2114.severity = error
+
+dotnet_diagnostic.CA2115.severity = error
+
+dotnet_diagnostic.CA2116.severity = error
+
+dotnet_diagnostic.CA2117.severity = error
+
+dotnet_diagnostic.CA2118.severity = error
+
+dotnet_diagnostic.CA2119.severity = error
+
+dotnet_diagnostic.CA2120.severity = error
+
+dotnet_diagnostic.CA2121.severity = error
+
+dotnet_diagnostic.CA2122.severity = error
+
+dotnet_diagnostic.CA2123.severity = error
+
+dotnet_diagnostic.CA2124.severity = error
+
+dotnet_diagnostic.CA2126.severity = error
+
+dotnet_diagnostic.CA2130.severity = error
+
+dotnet_diagnostic.CA2131.severity = error
+
+dotnet_diagnostic.CA2132.severity = error
+
+dotnet_diagnostic.CA2133.severity = error
+
+dotnet_diagnostic.CA2134.severity = error
+
+dotnet_diagnostic.CA2135.severity = error
+
+dotnet_diagnostic.CA2136.severity = error
+
+dotnet_diagnostic.CA2137.severity = error
+
+dotnet_diagnostic.CA2138.severity = error
+
+dotnet_diagnostic.CA2139.severity = error
+
+dotnet_diagnostic.CA2140.severity = error
+
+dotnet_diagnostic.CA2141.severity = error
+
+dotnet_diagnostic.CA2142.severity = error
+
+dotnet_diagnostic.CA2143.severity = error
+
+dotnet_diagnostic.CA2144.severity = error
+
+dotnet_diagnostic.CA2145.severity = error
+
+dotnet_diagnostic.CA2146.severity = error
+
+dotnet_diagnostic.CA2147.severity = error
+
+dotnet_diagnostic.CA2149.severity = error
+
+dotnet_diagnostic.CA2151.severity = error
+
+dotnet_diagnostic.CA2153.severity = error
+
+dotnet_diagnostic.CA2200.severity = error
+
+dotnet_diagnostic.CA2201.severity = error
+
+dotnet_diagnostic.CA2202.severity = error
+
+dotnet_diagnostic.CA2204.severity = error
+
+dotnet_diagnostic.CA2205.severity = error
+
+dotnet_diagnostic.CA2207.severity = error
+
+dotnet_diagnostic.CA2208.severity = error
+
+dotnet_diagnostic.CA2211.severity = error
+
+dotnet_diagnostic.CA2212.severity = error
+
+dotnet_diagnostic.CA2213.severity = error
+
+dotnet_diagnostic.CA2214.severity = error
+
+dotnet_diagnostic.CA2215.severity = error
+
+dotnet_diagnostic.CA2216.severity = error
+
+dotnet_diagnostic.CA2217.severity = error
+
+dotnet_diagnostic.CA2218.severity = error
+
+dotnet_diagnostic.CA2219.severity = error
+
+dotnet_diagnostic.CA2220.severity = error
+
+dotnet_diagnostic.CA2221.severity = error
+
+dotnet_diagnostic.CA2222.severity = error
+
+dotnet_diagnostic.CA2223.severity = error
+
+dotnet_diagnostic.CA2224.severity = error
+
+dotnet_diagnostic.CA2225.severity = error
+
+dotnet_diagnostic.CA2226.severity = error
+
+dotnet_diagnostic.CA2227.severity = suggestion
+
+dotnet_diagnostic.CA2228.severity = error
+
+dotnet_diagnostic.CA2229.severity = error
+
+dotnet_diagnostic.CA2230.severity = error
+
+dotnet_diagnostic.CA2231.severity = error
+
+dotnet_diagnostic.CA2232.severity = error
+
+dotnet_diagnostic.CA2233.severity = error
+
+dotnet_diagnostic.CA2234.severity = error
+
+dotnet_diagnostic.CA2235.severity = error
+
+dotnet_diagnostic.CA2236.severity = error
+
+dotnet_diagnostic.CA2237.severity = error
+
+dotnet_diagnostic.CA2238.severity = error
+
+dotnet_diagnostic.CA2239.severity = error
+
+dotnet_diagnostic.CA2240.severity = error
+
+dotnet_diagnostic.CA2241.severity = error
+
+dotnet_diagnostic.CA2242.severity = error
+
+dotnet_diagnostic.CA2243.severity = error
+
+dotnet_diagnostic.CA3075.severity = error
+
+dotnet_diagnostic.CA3077.severity = error
+
+dotnet_diagnostic.CA5122.severity = error
+
+dotnet_diagnostic.CA5350.severity = error
+
+dotnet_diagnostic.CA9999.severity = error
+
+dotnet_diagnostic.CS0078.severity = error
+
+dotnet_diagnostic.CS0105.severity = error
+
+dotnet_diagnostic.CS0108.severity = error
+
+dotnet_diagnostic.CS0109.severity = error
+
+dotnet_diagnostic.CS0114.severity = error
+
+dotnet_diagnostic.CS0162.severity = error
+
+dotnet_diagnostic.CS0164.severity = error
+
+dotnet_diagnostic.CS0168.severity = error
+
+dotnet_diagnostic.CS0183.severity = error
+
+dotnet_diagnostic.CS0184.severity = error
+
+dotnet_diagnostic.CS0197.severity = error
+
+dotnet_diagnostic.CS0219.severity = error
+
+dotnet_diagnostic.CS0251.severity = error
+
+dotnet_diagnostic.CS0252.severity = error
+
+dotnet_diagnostic.CS0253.severity = error
+
+dotnet_diagnostic.CS0278.severity = error
+
+dotnet_diagnostic.CS0279.severity = error
+
+dotnet_diagnostic.CS0280.severity = error
+
+dotnet_diagnostic.CS0282.severity = error
+
+dotnet_diagnostic.CS0419.severity = error
+
+dotnet_diagnostic.CS0420.severity = error
+
+dotnet_diagnostic.CS0435.severity = error
+
+dotnet_diagnostic.CS0436.severity = error
+
+dotnet_diagnostic.CS0437.severity = error
+
+dotnet_diagnostic.CS0440.severity = error
+
+dotnet_diagnostic.CS0458.severity = error
+
+dotnet_diagnostic.CS0464.severity = error
+
+dotnet_diagnostic.CS0465.severity = error
+
+dotnet_diagnostic.CS0469.severity = error
+
+dotnet_diagnostic.CS0472.severity = error
+
+dotnet_diagnostic.CS0473.severity = error
+
+dotnet_diagnostic.CS0612.severity = error
+
+dotnet_diagnostic.CS0618.severity = error
+
+dotnet_diagnostic.CS0626.severity = error
+
+dotnet_diagnostic.CS0628.severity = error
+
+dotnet_diagnostic.CS0642.severity = error
+
+dotnet_diagnostic.CS0652.severity = error
+
+dotnet_diagnostic.CS0657.severity = error
+
+dotnet_diagnostic.CS0658.severity = error
+
+dotnet_diagnostic.CS0659.severity = error
+
+dotnet_diagnostic.CS0660.severity = error
+
+dotnet_diagnostic.CS0661.severity = error
+
+dotnet_diagnostic.CS0665.severity = error
+
+dotnet_diagnostic.CS0672.severity = error
+
+dotnet_diagnostic.CS0675.severity = error
+
+dotnet_diagnostic.CS0684.severity = error
+
+dotnet_diagnostic.CS0693.severity = error
+
+dotnet_diagnostic.CS0728.severity = error
+
+dotnet_diagnostic.CS0809.severity = error
+
+dotnet_diagnostic.CS0811.severity = error
+
+dotnet_diagnostic.CS0824.severity = error
+
+dotnet_diagnostic.CS1030.severity = error
+
+dotnet_diagnostic.CS1058.severity = error
+
+dotnet_diagnostic.CS1062.severity = error
+
+dotnet_diagnostic.CS1064.severity = error
+
+dotnet_diagnostic.CS1066.severity = error
+
+dotnet_diagnostic.CS1072.severity = error
+
+dotnet_diagnostic.CS1522.severity = error
+
+dotnet_diagnostic.CS1570.severity = error
+
+dotnet_diagnostic.CS1571.severity = error
+
+dotnet_diagnostic.CS1572.severity = error
+
+dotnet_diagnostic.CS1573.severity = error
+
+dotnet_diagnostic.CS1574.severity = error
+
+dotnet_diagnostic.CS1580.severity = error
+
+dotnet_diagnostic.CS1581.severity = error
+
+dotnet_diagnostic.CS1584.severity = error
+
+dotnet_diagnostic.CS1587.severity = error
+
+dotnet_diagnostic.CS1589.severity = error
+
+dotnet_diagnostic.CS1590.severity = error
+
+dotnet_diagnostic.CS1592.severity = error
+
+dotnet_diagnostic.CS1616.severity = error
+
+dotnet_diagnostic.CS1633.severity = error
+
+dotnet_diagnostic.CS1634.severity = error
+
+dotnet_diagnostic.CS1635.severity = error
+
+dotnet_diagnostic.CS1645.severity = error
+
+dotnet_diagnostic.CS1658.severity = error
+
+dotnet_diagnostic.CS1668.severity = error
+
+dotnet_diagnostic.CS1685.severity = error
+
+dotnet_diagnostic.CS1687.severity = error
+
+dotnet_diagnostic.CS1690.severity = error
+
+dotnet_diagnostic.CS1692.severity = error
+
+dotnet_diagnostic.CS1695.severity = error
+
+dotnet_diagnostic.CS1696.severity = error
+
+dotnet_diagnostic.CS1697.severity = error
+
+dotnet_diagnostic.CS1700.severity = error
+
+dotnet_diagnostic.CS1701.severity = warning
+
+dotnet_diagnostic.CS1702.severity = error
+
+dotnet_diagnostic.CS1710.severity = error
+
+dotnet_diagnostic.CS1711.severity = error
+
+dotnet_diagnostic.CS1712.severity = error
+
+dotnet_diagnostic.CS1717.severity = error
+
+dotnet_diagnostic.CS1718.severity = error
+
+dotnet_diagnostic.CS1720.severity = error
+
+dotnet_diagnostic.CS1723.severity = error
+
+dotnet_diagnostic.CS1734.severity = error
+
+dotnet_diagnostic.CS1735.severity = error
+
+dotnet_diagnostic.CS1762.severity = error
+
+dotnet_diagnostic.CS1927.severity = error
+
+dotnet_diagnostic.CS1956.severity = error
+
+dotnet_diagnostic.CS1957.severity = error
+
+dotnet_diagnostic.CS1974.severity = error
+
+dotnet_diagnostic.CS1981.severity = error
+
+dotnet_diagnostic.CS1998.severity = error
+
+dotnet_diagnostic.CS2002.severity = error
+
+dotnet_diagnostic.CS2008.severity = error
+
+dotnet_diagnostic.CS2023.severity = error
+
+dotnet_diagnostic.CS2029.severity = error
+
+dotnet_diagnostic.CS2038.severity = error
+
+dotnet_diagnostic.CS3000.severity = error
+
+dotnet_diagnostic.CS3001.severity = error
+
+dotnet_diagnostic.CS3002.severity = error
+
+dotnet_diagnostic.CS3003.severity = error
+
+dotnet_diagnostic.CS3005.severity = error
+
+dotnet_diagnostic.CS3006.severity = error
+
+dotnet_diagnostic.CS3007.severity = error
+
+dotnet_diagnostic.CS3008.severity = error
+
+dotnet_diagnostic.CS3009.severity = error
+
+dotnet_diagnostic.CS3010.severity = error
+
+dotnet_diagnostic.CS3011.severity = error
+
+dotnet_diagnostic.CS3012.severity = error
+
+dotnet_diagnostic.CS3013.severity = error
+
+dotnet_diagnostic.CS3014.severity = error
+
+dotnet_diagnostic.CS3015.severity = error
+
+dotnet_diagnostic.CS3016.severity = error
+
+dotnet_diagnostic.CS3017.severity = error
+
+dotnet_diagnostic.CS3018.severity = error
+
+dotnet_diagnostic.CS3019.severity = error
+
+dotnet_diagnostic.CS3021.severity = error
+
+dotnet_diagnostic.CS3022.severity = error
+
+dotnet_diagnostic.CS3023.severity = error
+
+dotnet_diagnostic.CS3024.severity = error
+
+dotnet_diagnostic.CS3026.severity = error
+
+dotnet_diagnostic.CS3027.severity = error
+
+dotnet_diagnostic.CS4014.severity = error
+
+dotnet_diagnostic.CS4024.severity = error
+
+dotnet_diagnostic.CS4025.severity = error
+
+dotnet_diagnostic.CS4026.severity = error
+
+dotnet_diagnostic.CS7033.severity = error
+
+dotnet_diagnostic.CS7035.severity = error
+
+dotnet_diagnostic.CS7080.severity = error
+
+dotnet_diagnostic.CS7081.severity = error
+
+dotnet_diagnostic.CS7082.severity = error
+
+dotnet_diagnostic.CS7090.severity = error
+
+dotnet_diagnostic.CS7095.severity = error
+
+dotnet_diagnostic.CS8001.severity = error
+
+dotnet_diagnostic.CS8002.severity = error
+
+dotnet_diagnostic.CS8009.severity = error
+
+dotnet_diagnostic.CS8012.severity = error
+
+dotnet_diagnostic.CS8018.severity = error
+
+dotnet_diagnostic.CS8019.severity = error
+
+dotnet_diagnostic.CS8020.severity = error
+
+dotnet_diagnostic.CS8021.severity = error
+
+dotnet_diagnostic.CS8029.severity = error
+
+dotnet_diagnostic.CS8032.severity = error
+
+dotnet_diagnostic.CS8033.severity = error
+
+dotnet_diagnostic.CS8034.severity = error
+
+dotnet_diagnostic.CS8040.severity = error
+
+dotnet_diagnostic.CS8073.severity = error
+
+dotnet_diagnostic.CS8094.severity = error
+
+dotnet_diagnostic.CS8105.severity = error
+
+dotnet_diagnostic.CS8123.severity = error
+
+dotnet_diagnostic.CS8305.severity = error
+
+dotnet_diagnostic.CS8321.severity = error
+
+dotnet_diagnostic.CS8359.severity = error
+
+dotnet_diagnostic.CS8360.severity = error
+
+dotnet_diagnostic.CS8371.severity = error
+
+dotnet_diagnostic.CS8383.severity = error
+
+dotnet_diagnostic.CS8387.severity = error
+
+dotnet_diagnostic.IDE0001.severity = error
+
+dotnet_diagnostic.IDE0002.severity = error
+
+dotnet_diagnostic.IDE0003.severity = none
+
+dotnet_diagnostic.IDE0003WithoutSuggestion.severity = none
+
+dotnet_diagnostic.IDE0004.severity = error
+
+dotnet_diagnostic.IDE0004WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0005.severity = error
+
+dotnet_diagnostic.IDE0007.severity = error
+
+dotnet_diagnostic.IDE0007WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0008.severity = none
+
+dotnet_diagnostic.IDE0008WithoutSuggestion.severity = none
+
+dotnet_diagnostic.IDE0009.severity = error
+
+dotnet_diagnostic.IDE0009WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0010.severity = error
+
+dotnet_diagnostic.IDE0010WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0011.severity = error
+
+dotnet_diagnostic.IDE0011WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0016.severity = error
+
+dotnet_diagnostic.IDE0016WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0017.severity = error
+
+dotnet_diagnostic.IDE0017WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0018.severity = error
+
+dotnet_diagnostic.IDE0018WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0019.severity = error
+
+dotnet_diagnostic.IDE0019WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0020.severity = error
+
+dotnet_diagnostic.IDE0020WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0021.severity = error
+
+dotnet_diagnostic.IDE0022.severity = error
+
+dotnet_diagnostic.IDE0023.severity = error
+
+dotnet_diagnostic.IDE0024.severity = error
+
+dotnet_diagnostic.IDE0025.severity = error
+
+dotnet_diagnostic.IDE0026.severity = error
+
+dotnet_diagnostic.IDE0027.severity = error
+
+dotnet_diagnostic.IDE0028.severity = error
+
+dotnet_diagnostic.IDE0028WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0029.severity = error
+
+dotnet_diagnostic.IDE0029WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0030.severity = error
+
+dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0031.severity = error
+
+dotnet_diagnostic.IDE0031WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0032.severity = error
+
+dotnet_diagnostic.IDE0032WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0033.severity = error
+
+dotnet_diagnostic.IDE0033WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0034.severity = error
+
+dotnet_diagnostic.IDE0034WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0036.severity = error
+
+dotnet_diagnostic.IDE0036WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0037.severity = error
+
+dotnet_diagnostic.IDE0037WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0039.severity = error
+
+dotnet_diagnostic.IDE0039WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0040.severity = error
+
+dotnet_diagnostic.IDE0040WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0041.severity = error
+
+dotnet_diagnostic.IDE0041WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0042.severity = error
+
+dotnet_diagnostic.IDE0042WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0043.severity = error
+
+dotnet_diagnostic.IDE0044.severity = error
+
+dotnet_diagnostic.IDE0044WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0045.severity = suggestion
+
+dotnet_diagnostic.IDE0045WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0046.severity = suggestion
+
+dotnet_diagnostic.IDE0046WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0047.severity = error
+
+dotnet_diagnostic.IDE0047WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0048.severity = error
+
+dotnet_diagnostic.IDE0048WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE0049.severity = error
+
+dotnet_diagnostic.IDE0049WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE1005.severity = error
+
+dotnet_diagnostic.IDE1005WithoutSuggestion.severity = error
+
+dotnet_diagnostic.IDE1006.severity = error
+
+dotnet_diagnostic.IDE1006WithoutSuggestion.severity = error
+
+dotnet_diagnostic.SA0000.severity = error
+
+dotnet_diagnostic.SA0001.severity = error
+
+dotnet_diagnostic.SA0002.severity = error
+
+dotnet_diagnostic.SA1000.severity = error
+
+dotnet_diagnostic.SA1001.severity = error
+
+dotnet_diagnostic.SA1002.severity = error
+
+dotnet_diagnostic.SA1003.severity = error
+
+dotnet_diagnostic.SA1004.severity = error
+
+dotnet_diagnostic.SA1005.severity = error
+
+dotnet_diagnostic.SA1006.severity = error
+
+dotnet_diagnostic.SA1007.severity = error
+
+dotnet_diagnostic.SA1008.severity = error
+
+dotnet_diagnostic.SA1009.severity = error
+
+dotnet_diagnostic.SA1010.severity = error
+
+dotnet_diagnostic.SA1012.severity = error
+
+dotnet_diagnostic.SA1013.severity = error
+
+dotnet_diagnostic.SA1014.severity = error
+
+dotnet_diagnostic.SA1015.severity = error
+
+dotnet_diagnostic.SA1016.severity = error
+
+dotnet_diagnostic.SA1017.severity = error
+
+dotnet_diagnostic.SA1018.severity = error
+
+dotnet_diagnostic.SA1019.severity = error
+
+dotnet_diagnostic.SA1020.severity = error
+
+dotnet_diagnostic.SA1021.severity = error
+
+dotnet_diagnostic.SA1022.severity = error
+
+dotnet_diagnostic.SA1023.severity = error
+
+dotnet_diagnostic.SA1024.severity = error
+
+dotnet_diagnostic.SA1025.severity = error
+
+dotnet_diagnostic.SA1026.severity = error
+
+dotnet_diagnostic.SA1027.severity = error
+
+dotnet_diagnostic.SA1028.severity = error
+
+dotnet_diagnostic.SA1100.severity = error
+
+dotnet_diagnostic.SA1101.severity = error
+
+dotnet_diagnostic.SA1102.severity = error
+
+dotnet_diagnostic.SA1103.severity = error
+
+dotnet_diagnostic.SA1104.severity = error
+
+dotnet_diagnostic.SA1105.severity = error
+
+dotnet_diagnostic.SA1106.severity = error
+
+dotnet_diagnostic.SA1107.severity = error
+
+dotnet_diagnostic.SA1108.severity = error
+
+dotnet_diagnostic.SA1110.severity = error
+
+dotnet_diagnostic.SA1111.severity = error
+
+dotnet_diagnostic.SA1112.severity = error
+
+dotnet_diagnostic.SA1113.severity = error
+
+dotnet_diagnostic.SA1114.severity = error
+
+dotnet_diagnostic.SA1115.severity = error
+
+dotnet_diagnostic.SA1116.severity = error
+
+dotnet_diagnostic.SA1117.severity = error
+
+dotnet_diagnostic.SA1118.severity = error
+
+dotnet_diagnostic.SA1119.severity = error
+
+dotnet_diagnostic.SA1120.severity = error
+
+dotnet_diagnostic.SA1121.severity = error
+
+dotnet_diagnostic.SA1122.severity = error
+
+dotnet_diagnostic.SA1123.severity = error
+
+dotnet_diagnostic.SA1124.severity = error
+
+dotnet_diagnostic.SA1125.severity = error
+
+dotnet_diagnostic.SA1127.severity = error
+
+dotnet_diagnostic.SA1128.severity = error
+
+dotnet_diagnostic.SA1129.severity = error
+
+dotnet_diagnostic.SA1130.severity = error
+
+dotnet_diagnostic.SA1131.severity = error
+
+dotnet_diagnostic.SA1132.severity = error
+
+dotnet_diagnostic.SA1133.severity = error
+
+dotnet_diagnostic.SA1134.severity = error
+
+dotnet_diagnostic.SA1135.severity = suggestion
+
+dotnet_diagnostic.SA1136.severity = error
+
+dotnet_diagnostic.SA1137.severity = error
+
+dotnet_diagnostic.SA1139.severity = error
+
+dotnet_diagnostic.SA1200.severity = error
+
+dotnet_diagnostic.SA1201.severity = error
+
+dotnet_diagnostic.SA1202.severity = error
+
+dotnet_diagnostic.SA1203.severity = error
+
+dotnet_diagnostic.SA1204.severity = error
+
+dotnet_diagnostic.SA1205.severity = error
+
+dotnet_diagnostic.SA1206.severity = error
+
+dotnet_diagnostic.SA1207.severity = error
+
+dotnet_diagnostic.SA1208.severity = error
+
+dotnet_diagnostic.SA1209.severity = error
+
+dotnet_diagnostic.SA1210.severity = error
+
+dotnet_diagnostic.SA1211.severity = error
+
+dotnet_diagnostic.SA1212.severity = error
+
+dotnet_diagnostic.SA1213.severity = error
+
+dotnet_diagnostic.SA1214.severity = error
+
+dotnet_diagnostic.SA1216.severity = error
+
+dotnet_diagnostic.SA1217.severity = error
+
+dotnet_diagnostic.SA1300.severity = error
+
+dotnet_diagnostic.SA1302.severity = error
+
+dotnet_diagnostic.SA1303.severity = error
+
+dotnet_diagnostic.SA1304.severity = error
+
+dotnet_diagnostic.SA1306.severity = error
+
+dotnet_diagnostic.SA1307.severity = error
+
+dotnet_diagnostic.SA1308.severity = error
+
+dotnet_diagnostic.SA1309.severity = error
+
+dotnet_diagnostic.SA1310.severity = error
+
+dotnet_diagnostic.SA1311.severity = error
+
+dotnet_diagnostic.SA1312.severity = error
+
+dotnet_diagnostic.SA1313.severity = error
+
+dotnet_diagnostic.SA1314.severity = error
+
+dotnet_diagnostic.SA1400.severity = error
+
+dotnet_diagnostic.SA1401.severity = error
+
+dotnet_diagnostic.SA1402.severity = error
+
+dotnet_diagnostic.SA1403.severity = error
+
+dotnet_diagnostic.SA1404.severity = suggestion
+
+dotnet_diagnostic.SA1405.severity = error
+
+dotnet_diagnostic.SA1406.severity = error
+
+dotnet_diagnostic.SA1407.severity = error
+
+dotnet_diagnostic.SA1408.severity = error
+
+dotnet_diagnostic.SA1410.severity = error
+
+dotnet_diagnostic.SA1411.severity = error
+
+dotnet_diagnostic.SA1412.severity = error
+
+dotnet_diagnostic.SA1413.severity = error
+
+dotnet_diagnostic.SA1500.severity = error
+
+dotnet_diagnostic.SA1501.severity = error
+
+dotnet_diagnostic.SA1502.severity = error
+
+dotnet_diagnostic.SA1503.severity = error
+
+dotnet_diagnostic.SA1504.severity = error
+
+dotnet_diagnostic.SA1505.severity = error
+
+dotnet_diagnostic.SA1506.severity = error
+
+dotnet_diagnostic.SA1507.severity = error
+
+dotnet_diagnostic.SA1508.severity = error
+
+dotnet_diagnostic.SA1509.severity = error
+
+dotnet_diagnostic.SA1510.severity = error
+
+dotnet_diagnostic.SA1511.severity = error
+
+dotnet_diagnostic.SA1512.severity = error
+
+dotnet_diagnostic.SA1513.severity = error
+
+dotnet_diagnostic.SA1514.severity = error
+
+dotnet_diagnostic.SA1515.severity = error
+
+dotnet_diagnostic.SA1516.severity = error
+
+dotnet_diagnostic.SA1517.severity = error
+
+dotnet_diagnostic.SA1518.severity = error
+
+dotnet_diagnostic.SA1519.severity = error
+
+dotnet_diagnostic.SA1520.severity = error
+
+dotnet_diagnostic.SA1600.severity = error
+
+dotnet_diagnostic.SA1601.severity = error
+
+dotnet_diagnostic.SA1602.severity = error
+
+dotnet_diagnostic.SA1604.severity = error
+
+dotnet_diagnostic.SA1605.severity = error
+
+dotnet_diagnostic.SA1606.severity = error
+
+dotnet_diagnostic.SA1607.severity = error
+
+dotnet_diagnostic.SA1608.severity = error
+
+dotnet_diagnostic.SA1610.severity = error
+
+dotnet_diagnostic.SA1611.severity = suggestion
+
+dotnet_diagnostic.SA1612.severity = error
+
+dotnet_diagnostic.SA1613.severity = error
+
+dotnet_diagnostic.SA1614.severity = error
+
+dotnet_diagnostic.SA1615.severity = suggestion
+
+dotnet_diagnostic.SA1616.severity = error
+
+dotnet_diagnostic.SA1617.severity = error
+
+dotnet_diagnostic.SA1618.severity = warning
+
+dotnet_diagnostic.SA1619.severity = error
+
+dotnet_diagnostic.SA1620.severity = error
+
+dotnet_diagnostic.SA1621.severity = error
+
+dotnet_diagnostic.SA1622.severity = error
+
+dotnet_diagnostic.SA1623.severity = suggestion
+
+dotnet_diagnostic.SA1624.severity = error
+
+dotnet_diagnostic.SA1625.severity = error
+
+dotnet_diagnostic.SA1626.severity = error
+
+dotnet_diagnostic.SA1627.severity = error
+
+dotnet_diagnostic.SA1629.severity = none
+
+dotnet_diagnostic.SA1633.severity = none
+
+dotnet_diagnostic.SA1634.severity = error
+
+dotnet_diagnostic.SA1635.severity = error
+
+dotnet_diagnostic.SA1636.severity = error
+
+dotnet_diagnostic.SA1637.severity = error
+
+dotnet_diagnostic.SA1638.severity = error
+
+dotnet_diagnostic.SA1640.severity = error
+
+dotnet_diagnostic.SA1641.severity = error
+
+dotnet_diagnostic.SA1642.severity = error
+
+dotnet_diagnostic.SA1643.severity = error
+
+dotnet_diagnostic.SA1648.severity = suggestion
+
+dotnet_diagnostic.SA1649.severity = none
+
+dotnet_diagnostic.SA1651.severity = error
+
+dotnet_diagnostic.SA1652.severity = none
+
+# DF0010: Marks undisposed local variables.
+dotnet_diagnostic.DF0010.severity = warning

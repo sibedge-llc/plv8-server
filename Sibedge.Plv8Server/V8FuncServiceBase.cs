@@ -17,6 +17,7 @@
             this.connection = connection;
         }
 
+        /// <summary> Executes SQL function </summary>
         public Task<string> ExecuteFunction(string funcName, params object[] args)
         {
             var argNames = string.Join(
