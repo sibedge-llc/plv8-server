@@ -90,7 +90,10 @@
                 Kind = Kinds.Scalar,
             });
 
-            foreach (var dataType in fieldInfoList.Select(x => x.DataType).Union(new[] { "integer" }).Distinct())
+            foreach (var dataType in fieldInfoList.Select(x => x.DataType)
+                .Union(new[] { "integer" })
+                .Union(new[] { "text" })
+                .Distinct())
             {
                 ret.Add(new Element
                 {
