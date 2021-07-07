@@ -74,7 +74,7 @@
         {
             var ret = new List<Element>();
             var fieldInfoList = (await this.GetFieldInfo()).ToList();
-            var foreignKeyInfoList = (await this.GetForeignKeyInfo()).ToList();
+            var foreignKeyInfoList = new List<ForeignKeyInfo>(); //// (await this.GetForeignKeyInfo()).ToList();
 
             ret.Add(this.CreateNode(fieldInfoList));
             ret.Add(this.CreateQuery(fieldInfoList));
