@@ -1,8 +1,10 @@
 ﻿namespace Sibedge.Plv8Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Dapper;
     using Helpers;
@@ -49,7 +51,22 @@
             }
             else
             {
-                var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}');";
+                if (query.Variables?.Any() == true)
+                {
+                    query.Query = $"query {query.Query.Substring(query.Query.IndexOf('{', StringComparison.InvariantCulture) - 1)}";
+
+                    foreach (var variable in query.Variables)
+                    {
+                        string value = variable.Value.ValueKind == JsonValueKind.String
+                            ? $"\"{variable.Value.ToString()}\""
+                            : variable.Value.ToString();
+
+                        query.Query = query.Query
+                            .Replace($"${variable.Key}", value, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                }
+
+                var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}', null);";
                 json = await this.connection.QueryFirstAsync<string>(sql);
             }
 
