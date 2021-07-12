@@ -57,9 +57,7 @@
 
                     foreach (var variable in query.Variables)
                     {
-                        string value = variable.Value.ValueKind == JsonValueKind.String
-                            ? $"\"{variable.Value.ToString()}\""
-                            : variable.Value.ToString();
+                        var value = this.GetStringValue(variable.Value);
 
                         query.Query = query.Query
                             .Replace($"${variable.Key}", value, StringComparison.InvariantCultureIgnoreCase);
@@ -71,6 +69,22 @@
             }
 
             return json;
+        }
+
+        private string GetStringValue(JsonElement element)
+        {
+            if (element.ValueKind == JsonValueKind.Object)
+            {
+                var enumerator = element.EnumerateObject().GetEnumerator();
+                var objectItems = enumerator.Select(x => $"{x.Name}: {this.GetStringValue(x.Value)}").ToList();
+
+                var ret = $"{{{string.Join(',', objectItems)}}}";
+                return ret;
+            }
+
+            return element.ValueKind == JsonValueKind.String
+                ? $"\"{element}\""
+                : element.ToString();
         }
 
         private async ValueTask<IntrospectionSchema> GetIntrospectionData()
