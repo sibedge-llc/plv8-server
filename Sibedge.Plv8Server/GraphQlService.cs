@@ -237,7 +237,8 @@
                         {
                             Name = "orderByDescending",
                             Type = new Type(Kinds.Enum, $"{tableName}OrderByDescending"),
-                        },                        new InputField
+                        },
+                        new InputField
                         {
                             Name = "skip",
                             Type = new Type(Kinds.InputObject, "Skip"),
@@ -318,7 +319,7 @@
                     element.Fields.Add(new Field
                     {
                         Name = multipleLink.TableName,
-                        Type = new Type(Kinds.Object, multipleLink.TableName),
+                        Type = Type.CreateList(Kinds.Object, multipleLink.TableName),
                         Args = new List<InputField>
                         {
                             new InputField

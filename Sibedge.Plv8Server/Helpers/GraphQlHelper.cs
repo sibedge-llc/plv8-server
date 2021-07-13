@@ -4,7 +4,9 @@
     {
         public static string ToTypeName(this string str)
         {
-            return str.Replace(' ', '_');
+            return str
+                .Replace(' ', '_')
+                .Replace('-', '_');
         }
     }
 }
