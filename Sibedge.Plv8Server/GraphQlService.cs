@@ -4,39 +4,58 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Dapper;
     using Helpers;
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Options;
     using Models;
     using Models.Introspection;
-    using Newtonsoft.Json;
     using Type = Models.Introspection.Type;
 
     /// <summary> GraphQL service </summary>
     public class GraphQlService
     {
-        private static readonly string[] FilterOperators = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains" };
+        private const string IntrospectionCacheKey = "__IntrospectionData";
+
+        private static readonly string[] FilterOperatorsInt = { "equals", "notEquals", "less", "greater", "lessOrEquals", "greaterOrEquals" };
+        private static readonly string[] FilterOperatorsText = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends" };
+        private static readonly string[] FilterOperatorsBool = { "isNull" };
+        private static readonly string[] FilterOperatorsArray = { "in" };
+
+        private static readonly string[] NumericTypes = { "integer", "bigint", "real", "double_precision", "numeric" };
+        private static readonly string[] DateTypes = { "timestamp", "date", "time" };
+        private static readonly string[] DateAggFunctions = { "max", "min" };
+        private static readonly string[] AggFunctions = new[] { "avg", "sum" }.Union(DateAggFunctions).ToArray();
 
         private readonly IDbConnection connection;
-        private readonly Settings settings;
+        private readonly Plv8Settings settings;
+        private readonly IMemoryCache memoryCache;
 
         /// <summary>Initializes a new instance of the <see cref="GraphQlService"/> class. </summary>
-        public GraphQlService(IDbConnection connection, IOptions<Settings> settings)
+        public GraphQlService(IDbConnection connection, IOptions<Plv8Settings> settings, IMemoryCache memoryCache)
         {
             this.connection = connection;
             this.settings = settings.Value;
+            this.memoryCache = memoryCache;
         }
 
         /// <summary> Execute graphQL query </summary>
         /// <param name="query"> Query data </param>
-        public async ValueTask<string> PerformQuery(GraphQlQuery query)
+        /// <param name="authData"> Authorization data </param>
+        public async ValueTask<string> PerformQuery(GraphQlQuery query, AuthData authData)
         {
             string json;
 
             if (query.OperationName == "IntrospectionQuery")
             {
+                if (this.memoryCache.TryGetValue(IntrospectionCacheKey, out string cachedJson))
+                {
+                    return cachedJson;
+                }
+
                 var schema = await this.GetIntrospectionData();
 
                 var data = new
@@ -47,7 +66,9 @@
                     },
                 };
 
-                json = JsonConvert.SerializeObject(data);
+                json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+
+                this.memoryCache.Set(IntrospectionCacheKey, json);
             }
             else
             {
@@ -64,7 +85,19 @@
                     }
                 }
 
-                var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}', null);";
+                string authJson = "NULL";
+
+                if (authData != null)
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    };
+
+                    authJson = $"'{JsonSerializer.Serialize(authData, options)}'";
+                }
+
+                var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}', {authJson});";
                 json = await this.connection.QueryFirstAsync<string>(sql);
             }
 
@@ -82,9 +115,14 @@
                 return ret;
             }
 
-            return element.ValueKind == JsonValueKind.String
-                ? $"\"{element}\""
-                : element.ToString();
+            return element.ValueKind switch
+            {
+                JsonValueKind.Null => "null",
+                JsonValueKind.True => "true",
+                JsonValueKind.False => "false",
+                JsonValueKind.String => $"\"{element}\"",
+                _ => element.ToString(),
+            };
         }
 
         private async ValueTask<IntrospectionSchema> GetIntrospectionData()
@@ -110,8 +148,8 @@
             ret.Add(this.CreateNode(fieldInfoList));
             ret.Add(this.CreateQuery(fieldInfoList));
             ret.AddRange(this.CreateTables(fieldInfoList, foreignKeyInfoList));
-            ret.AddRange(this.CreateFilters(fieldInfoList));
-            ret.AddRange(this.CreateAggregates(fieldInfoList));
+            ret.AddRange(this.CreateFilters(fieldInfoList, foreignKeyInfoList));
+            ret.AddRange(this.CreateAggregates(fieldInfoList, foreignKeyInfoList));
 
             // Data types
             ret.Add(new Element
@@ -122,8 +160,9 @@
             });
 
             foreach (var dataType in fieldInfoList.Select(x => x.DataType)
-                .Union(new[] { "integer" })
-                .Union(new[] { "text" })
+                .Union(new[] { DataTypes.Integer })
+                .Union(new[] { DataTypes.Text })
+                .Union(new[] { DataTypes.Boolean })
                 .Distinct())
             {
                 ret.Add(new Element
@@ -221,7 +260,7 @@
                         new InputField
                         {
                             Name = "id",
-                            Type = new Type(Kinds.InputObject, "IdFilter"),
+                            Type = new Type(Kinds.Scalar, DataTypes.Integer),
                         },
                         new InputField
                         {
@@ -241,12 +280,12 @@
                         new InputField
                         {
                             Name = "skip",
-                            Type = new Type(Kinds.InputObject, "Skip"),
+                            Type = new Type(Kinds.Scalar, DataTypes.Integer),
                         },
                         new InputField
                         {
                             Name = "take",
-                            Type = new Type(Kinds.InputObject, "Take"),
+                            Type = new Type(Kinds.Scalar, DataTypes.Integer),
                         },
                     },
                 });
@@ -261,6 +300,16 @@
                         {
                             Name = "filter",
                             Type = new Type(Kinds.InputObject, $"{tableName}Filter"),
+                        },
+                        new InputField
+                        {
+                            Name = "groupBy",
+                            Type = new Type(Kinds.Enum, $"{tableName}OrderBy"),
+                        },
+                        new InputField
+                        {
+                            Name = "aggFilter",
+                            Type = new Type(Kinds.InputObject, $"{tableName}AggFilter"),
                         },
                     },
                 });
@@ -288,17 +337,26 @@
 
                 foreach (var column in table)
                 {
-                    var dataTypeName = column.ColumnName.ToLowerInvariant() == this.settings.IdField.ToLowerInvariant()
+                    bool isIdColumn = column.ColumnName.ToLowerInvariant() == this.settings.IdField.ToLowerInvariant();
+
+                    var dataTypeName = isIdColumn
                         ? "Id"
                         : column.DataType.ToTypeName();
 
-                    element.Fields.Add(new Field
+                    var field = new Field
                     {
                         Name = column.ColumnName,
                         Type = column.IsNullable
                             ? new Type(Kinds.Scalar, dataTypeName)
                             : Type.CreateNonNull(Kinds.Scalar, dataTypeName),
-                    });
+                    };
+
+                    if (isIdColumn)
+                    {
+                        field.RawType = Type.CreateNonNull(Kinds.Scalar, column.DataType.ToTypeName());
+                    }
+
+                    element.Fields.Add(field);
                 }
 
                 var singleLinks = foreignKeyList.Where(x => x.TableName == table.Key);
@@ -310,6 +368,14 @@
                             ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
                             : singleLink.ColumnName,
                         Type = new Type(Kinds.Object, singleLink.ForeignTableName),
+                        Args = new List<InputField>
+                        {
+                            new InputField
+                            {
+                                Name = "filter",
+                                Type = new Type(Kinds.InputObject, $"{singleLink.ForeignTableName}Filter"),
+                            },
+                        },
                     });
                 }
 
@@ -337,23 +403,13 @@
                                 Name = "orderByDescending",
                                 Type = new Type(Kinds.Enum, $"{multipleLink.TableName}OrderByDescending"),
                             },
-                            new InputField
-                            {
-                                Name = "skip",
-                                Type = new Type(Kinds.InputObject, "Skip"),
-                            },
-                            new InputField
-                            {
-                                Name = "take",
-                                Type = new Type(Kinds.InputObject, "Take"),
-                            },
                         },
                     });
 
                     element.Fields.Add(new Field
                     {
                         Name = multipleLink.TableName + this.settings.AggPostfix,
-                        Type = new Type(Kinds.InputObject, multipleLink.TableName + this.settings.AggPostfix),
+                        Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}{this.settings.AggPostfix}Nested"),
                         Args = new List<InputField>
                         {
                             new InputField
@@ -371,16 +427,19 @@
             return ret;
         }
 
-        private List<Element> CreateAggregates(List<FieldInfo> fieldInfoList)
+        private List<Element> CreateAggregates(List<FieldInfo> fieldInfoList, List<ForeignKeyInfo> foreignKeyList)
         {
             var ret = new List<Element>();
-            var numericTypes = new[] { "integer", "bigint", "real", "double_precision", "numeric" };
 
-            var aggFunctions = new[] { "max", "min", "avg", "sum" };
+            Expression<Func<string, string>> selectExpr = x => x;
+
             if (this.settings.AggPostfix[0] == '_')
             {
-                aggFunctions = aggFunctions.Select(x => x + "_").ToArray();
+                selectExpr = x => x + "_";
             }
+
+            var dateAggFunctions = DateAggFunctions.AsQueryable().Select(selectExpr).ToArray();
+            var aggFunctions = AggFunctions.AsQueryable().Select(selectExpr).ToArray();
 
             var distinctStart = "distinct" + ((this.settings.AggPostfix[0] == '_') ? "_" : string.Empty);
 
@@ -388,20 +447,27 @@
 
             foreach (var table in tables)
             {
-                var element = new Element
+                var countField = new Field
+                {
+                    Name = "count",
+                    Type = new Type(Kinds.Scalar, DataTypes.Integer),
+                };
+
+                var elementRoot = new Element
                 {
                     Name = table.Key + this.settings.AggPostfix,
                     Description = "Aggregate function for " + table.Key,
                     Interfaces = new List<Type> { new Type(Kinds.Interface, "Node") },
                     Kind = Kinds.Object,
-                    Fields = new List<Field>
-                    {
-                        new Field
-                        {
-                            Name = "count",
-                            Type = new Type(Kinds.Scalar, "integer"),
-                        },
-                    },
+                };
+
+                var element = new Element
+                {
+                    Name = elementRoot.Name + "Nested",
+                    Description = elementRoot.Description,
+                    Interfaces = elementRoot.Interfaces,
+                    Kind = elementRoot.Kind,
+                    Fields = new List<Field> { countField },
                 };
 
                 foreach (var column in table)
@@ -419,98 +485,144 @@
                         Type = Type.CreateList(Kinds.Object, dataTypeName),
                     });
 
-                    if (!column.ColumnName.EndsWith(this.settings.IdPostfix) && numericTypes.Contains(dataTypeName))
+                    if (!column.ColumnName.EndsWith(this.settings.IdPostfix))
                     {
-                        foreach (var aggFunction in aggFunctions)
+                        var aggFunctionsList = Array.Empty<string>();
+
+                        if (NumericTypes.Contains(dataTypeName))
+                        {
+                            aggFunctionsList = aggFunctions;
+                        }
+                        else if (DateTypes.Any(x => dataTypeName.StartsWith(x)))
+                        {
+                            aggFunctionsList = dateAggFunctions;
+                        }
+
+                        foreach (var aggFunction in aggFunctionsList)
                         {
                             element.Fields.Add(new Field
                             {
                                 Name = aggFunction + column.ColumnName,
-                                Type = new Type(Kinds.Scalar, "integer"),
+                                Type = new Type(Kinds.Scalar, DataTypes.Integer),
                             });
                         }
                     }
                 }
 
+                var singleLinks = foreignKeyList.Where(x => x.TableName == table.Key);
+                foreach (var singleLink in singleLinks)
+                {
+                    element.Fields.Add(new Field
+                    {
+                        Name = singleLink.ColumnName.EndsWith(this.settings.IdPostfix)
+                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
+                            : singleLink.ColumnName,
+                        Type = new Type(Kinds.Object, singleLink.ForeignTableName),
+                        Args = new List<InputField>
+                        {
+                            new InputField
+                            {
+                                Name = "filter",
+                                Type = new Type(Kinds.InputObject, $"{singleLink.ForeignTableName}Filter"),
+                            },
+                        },
+                    });
+                }
+
+                elementRoot.Fields = element.Fields.ToList();
+                elementRoot.Fields.Add(new Field
+                {
+                    Name = "key",
+                    Type = new Type(Kinds.Scalar, "Id"),
+                });
+
                 ret.Add(element);
+                ret.Add(elementRoot);
             }
 
             return ret;
         }
 
-        private List<Element> CreateFilters(List<FieldInfo> fieldInfoList)
+        private List<Element> CreateFilters(List<FieldInfo> fieldInfoList, List<ForeignKeyInfo> foreignKeyList)
         {
             var ret = new List<Element>
             {
                 new Element
                 {
-                    Name = "IdFilter",
-                    Kind = Kinds.InputObject,
-                    InputFields = new List<InputField>
-                    {
-                        new InputField
-                        {
-                            Name = "id",
-                            Description = "The id of the object.",
-                            Type = Type.CreateNonNull(Kinds.Scalar, "Id"),
-                        },
-                    },
-                },
-                new Element
-                {
                     Name = "OperatorFilter",
                     Kind = Kinds.InputObject,
-                    InputFields = FilterOperators.Select(x => new InputField
-                    {
-                        Name = x,
-                        Description = $"'{x}' operator.",
-                        Type = Type.CreateNonNull(Kinds.Scalar, "text"),
-                    }).ToList(),
-                },
-                new Element
-                {
-                    Name = "Skip",
-                    Kind = Kinds.InputObject,
-                    InputFields = new List<InputField>
-                    {
-                        new InputField
+                    InputFields = FilterOperatorsText
+                        .Select(x => new InputField
                         {
-                            Name = "skip",
-                            Description = "Number of rows to skip.",
-                            Type = Type.CreateNonNull(Kinds.Scalar, "Skip"),
-                        },
-                    },
-                },
-                new Element
-                {
-                    Name = "Take",
-                    Kind = Kinds.InputObject,
-                    InputFields = new List<InputField>
-                    {
-                        new InputField
+                            Name = x,
+                            Description = $"'{x}' operator.",
+                            Type = new Type(Kinds.Scalar, DataTypes.Text),
+                        })
+                        .Union(FilterOperatorsInt.Select(x => new InputField
                         {
-                            Name = "take",
-                            Description = "Number of rows to take.",
-                            Type = Type.CreateNonNull(Kinds.Scalar, "Take"),
-                        },
-                    },
+                            Name = x,
+                            Description = $"'{x}' operator.",
+                            Type = new Type(Kinds.Scalar, DataTypes.Integer),
+                        }))
+                        .Union(FilterOperatorsBool.Select(x => new InputField
+                        {
+                            Name = x,
+                            Description = $"'{x}' operator.",
+                            Type = new Type(Kinds.Scalar, DataTypes.Boolean),
+                        }))
+                        .Union(FilterOperatorsArray.Select(x => new InputField
+                        {
+                            Name = x,
+                            Description = $"'{x}' operator.",
+                            Type = Type.CreateList(Kinds.Scalar, DataTypes.Integer),
+                        }))
+                        .ToList(),
                 },
             };
+
+            Expression<Func<string, string>> selectExpr = x => x;
+
+            if (this.settings.AggPostfix[0] == '_')
+            {
+                selectExpr = x => x + "_";
+            }
+
+            var dateAggFunctions = DateAggFunctions.AsQueryable().Select(selectExpr).ToArray();
+            var aggFunctions = AggFunctions.AsQueryable().Select(selectExpr).ToArray();
 
             var tables = fieldInfoList.GroupBy(x => x.TableName);
 
             foreach (var table in tables)
             {
+                var filerInputFields = table.Select(
+                    x => new InputField
+                    {
+                        Name = x.ColumnName,
+                        Description = x.ColumnName,
+                        Type = new Type(Kinds.Object, "OperatorFilter"),
+                    }).ToList();
+
+                var singleLinks = foreignKeyList.Where(x => x.TableName == table.Key);
+                foreach (var singleLink in singleLinks)
+                {
+                    var relationField = new InputField
+                    {
+                        Name = singleLink.ColumnName.EndsWith(this.settings.IdPostfix)
+                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
+                            : singleLink.ColumnName,
+                        Type = new Type(Kinds.Scalar, DataTypes.Boolean),
+                    };
+
+                    relationField.Description = $"{relationField.Name} relation existing";
+
+                    filerInputFields.Add(relationField);
+                }
+
                 ret.Add(new Element
                 {
                     Name = $"{table.Key}Filter",
                     Kind = Kinds.InputObject,
-                    InputFields = table.Select(x => new InputField
-                    {
-                        Name = x.ColumnName,
-                        Description = x.ColumnName,
-                        Type = Type.CreateNonNull(Kinds.Object, "OperatorFilter"),
-                    }).ToList(),
+                    InputFields = filerInputFields,
                 });
 
                 ret.Add(new Element
@@ -531,6 +643,51 @@
                     {
                         Name = x.ColumnName,
                     }).ToList(),
+                });
+
+                var aggFilerInputFields = new List<InputField>
+                {
+                    new InputField
+                    {
+                        Name = "count",
+                        Description = "count",
+                        Type = new Type(Kinds.Object, "OperatorFilter"),
+                    },
+                };
+
+                foreach (var column in table
+                    .Where(x => !x.ColumnName.EndsWith(this.settings.IdPostfix)
+                                && x.ColumnName != this.settings.IdField))
+                {
+                    var dataTypeName = column.DataType.ToTypeName();
+                    var aggFunctionsList = Array.Empty<string>();
+
+                    if (NumericTypes.Contains(dataTypeName))
+                    {
+                        aggFunctionsList = aggFunctions;
+                    }
+                    else if (DateTypes.Any(x => dataTypeName.StartsWith(x)))
+                    {
+                        aggFunctionsList = dateAggFunctions;
+                    }
+
+                    foreach (var aggFunction in aggFunctionsList)
+                    {
+                        aggFilerInputFields.Add(
+                            new InputField
+                            {
+                                Name = aggFunction + column.ColumnName,
+                                Description = aggFunction + column.ColumnName,
+                                Type = new Type(Kinds.Object, "OperatorFilter"),
+                            });
+                    }
+                }
+
+                ret.Add(new Element
+                {
+                    Name = $"{table.Key}AggFilter",
+                    Kind = Kinds.InputObject,
+                    InputFields = aggFilerInputFields,
                 });
             }
 

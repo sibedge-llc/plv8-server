@@ -2,6 +2,7 @@
 {
     using Newtonsoft.Json;
 
+    /// <summary> Base class for intraspection field </summary>
     public abstract class FieldBase
     {
         /// <summary> Name </summary>

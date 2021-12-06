@@ -17,5 +17,9 @@
         /// <summary> DeprecationReason </summary>
         [JsonProperty("deprecation reason")]
         public string DeprecationReason { get; set; }
+
+        /// <summary> Raw type (for id fields) </summary>
+        [JsonIgnore]
+        public Type RawType { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class Settings
+    public class Plv8Settings
     {
         public string IdField { get; set; }
 

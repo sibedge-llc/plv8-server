@@ -13,10 +13,10 @@
     public class ChangeService
     {
         private readonly IDbConnection connection;
-        private readonly Settings settings;
+        private readonly Plv8Settings settings;
 
         /// <summary> Initializes a new instance of the <see cref="ChangeService"/> class. </summary>
-        public ChangeService(IDbConnection connection, IOptions<Settings> settings)
+        public ChangeService(IDbConnection connection, IOptions<Plv8Settings> settings)
         {
             this.connection = connection;
             this.settings = settings.Value;
