@@ -21,7 +21,7 @@
         private const string IntrospectionCacheKey = "__IntrospectionData";
 
         private static readonly string[] FilterOperatorsInt = { "equals", "notEquals", "less", "greater", "lessOrEquals", "greaterOrEquals" };
-        private static readonly string[] FilterOperatorsText = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends" };
+        private static readonly string[] FilterOperatorsText = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends", "equalsNoCase" };
         private static readonly string[] FilterOperatorsBool = { "isNull" };
         private static readonly string[] FilterOperatorsArray = { "in" };
 
@@ -614,6 +614,20 @@
                     };
 
                     relationField.Description = $"{relationField.Name} relation existing";
+
+                    filerInputFields.Add(relationField);
+                }
+
+                var multipleLinks = foreignKeyList.Where(x => x.ForeignTableName == table.Key);
+                foreach (var multipleLink in multipleLinks)
+                {
+                    var relationField = new InputField
+                    {
+                        Name = multipleLink.TableName,
+                        Type = new Type(Kinds.Scalar, DataTypes.Boolean),
+                    };
+
+                    relationField.Description = $"{relationField.Name} reverse relation existing";
 
                     filerInputFields.Add(relationField);
                 }
