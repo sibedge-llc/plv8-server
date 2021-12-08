@@ -2,6 +2,8 @@
 {
     using System.ComponentModel;
     using System.Reflection;
+    using System.Text.Json;
+    using Models;
 
     public static class GeneralHelper
     {
@@ -16,6 +18,26 @@
             var attributes = fi.GetCustomAttribute<DescriptionAttribute>(false);
 
             return attributes?.Description ?? source.ToString();
+        }
+
+        /// <summary> Serializes authorization data </summary>
+        /// <param name="authData"> Authorization data </param>
+        /// <returns> JSON </returns>
+        public static string Serialize(this AuthData authData)
+        {
+            if (authData != null)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+
+                return $"'{JsonSerializer.Serialize(authData, options)}'";
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -85,17 +85,7 @@
                     }
                 }
 
-                string authJson = "NULL";
-
-                if (authData != null)
-                {
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    };
-
-                    authJson = $"'{JsonSerializer.Serialize(authData, options)}'";
-                }
+                string authJson = authData.Serialize() ?? "NULL";
 
                 var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}', {authJson});";
                 json = await this.connection.QueryFirstAsync<string>(sql);

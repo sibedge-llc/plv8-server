@@ -27,9 +27,10 @@
         /// <param name="data"> Data to insert </param>
         /// <param name="idKeys"> Primary key fields </param>
         /// <param name="operation"> Data change operation </param>
-        public Task<string> Change(string tableName, string data, IList<string> idKeys, ChangeOperation operation)
+        /// <param name="authData"> Authorization data </param>
+        public Task<string> Change(string tableName, string data, IList<string> idKeys, ChangeOperation operation, AuthData authData)
         {
-            var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema);";
+            var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema, @user::jsonb);";
 
             return this.connection.QueryFirstAsync<string>(
                 sql,
@@ -40,6 +41,7 @@
                     idKeys = idKeys?.Any() == true ? idKeys : this.settings.DefaultKeys,
                     operation = operation.GetDescription(),
                     schema = this.settings.Schema,
+                    user = authData.Serialize(),
                 });
         }
     }
