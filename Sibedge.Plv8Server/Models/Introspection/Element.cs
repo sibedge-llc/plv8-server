@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
-    /// <summary> Any element </summary>
+    /// <summary> Any graphQL introspection element </summary>
     public class Element
     {
         /// <summary> Input fields </summary>

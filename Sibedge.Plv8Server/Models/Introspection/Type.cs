@@ -2,7 +2,7 @@
 {
     using Newtonsoft.Json;
 
-    /// <summary> Type </summary>
+    /// <summary> GraphQL introspection type </summary>
     public class Type
     {
         /// <summary> Initializes a new instance of the <see cref="Type"/> class. </summary>
@@ -11,6 +11,9 @@
         }
 
         /// <summary> Initializes a new instance of the <see cref="Type"/> class. </summary>
+        /// <param name="kind"> Type kind </param>
+        /// <param name="name"> Type name </param>
+        /// <param name="type"> Parent type </param>
         public Type(string kind, string name, Type type = null)
         {
             this.Kind = kind;
@@ -18,15 +21,15 @@
             this.OfType = type;
         }
 
-        /// <summary> Kind </summary>
+        /// <summary> Type kind </summary>
         [JsonProperty("kind")]
         public string Kind { get; set; }
 
-        /// <summary> Name </summary>
+        /// <summary> Type name </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        /// <summary> Of type </summary>
+        /// <summary> Parent type </summary>
         [JsonProperty("ofType")]
         public Type OfType { get; set; }
 

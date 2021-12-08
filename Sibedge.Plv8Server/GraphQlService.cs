@@ -34,7 +34,7 @@
         private readonly Plv8Settings settings;
         private readonly IMemoryCache memoryCache;
 
-        /// <summary>Initializes a new instance of the <see cref="GraphQlService"/> class. </summary>
+        /// <summary> Initializes a new instance of the <see cref="GraphQlService"/> class. </summary>
         public GraphQlService(IDbConnection connection, IOptions<Plv8Settings> settings, IMemoryCache memoryCache)
         {
             this.connection = connection;

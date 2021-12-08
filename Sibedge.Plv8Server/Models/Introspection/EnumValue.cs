@@ -2,6 +2,7 @@
 {
     using Newtonsoft.Json;
 
+    /// <summary> GraphQL introspection enum value </summary>
     public class EnumValue
     {
         /// <summary> Name </summary>

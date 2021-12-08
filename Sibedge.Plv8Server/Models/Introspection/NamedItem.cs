@@ -2,7 +2,7 @@
 {
     using Newtonsoft.Json;
 
-    /// <summary> Item with name </summary>
+    /// <summary> GraphQL introspection item with name </summary>
     public class NamedItem
     {
         /// <summary>Initializes a new instance of the <see cref="NamedItem"/> class. </summary>

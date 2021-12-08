@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
-    /// <summary> Introspection schema </summary>
+    /// <summary> GraphQL introspection schema </summary>
     public class IntrospectionSchema
     {
         /// <summary> Directives </summary>

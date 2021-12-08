@@ -2,6 +2,7 @@
 {
     using Newtonsoft.Json;
 
+    /// <summary> GraphQL introspection input field </summary>
     public class InputField : FieldBase
     {
         /// <summary> Default value </summary>
