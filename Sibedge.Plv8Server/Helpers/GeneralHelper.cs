@@ -5,6 +5,7 @@
     using System.Text.Json;
     using Models;
 
+    /// <summary> General helper </summary>
     public static class GeneralHelper
     {
         /// <summary> Returns Description attribute value </summary>

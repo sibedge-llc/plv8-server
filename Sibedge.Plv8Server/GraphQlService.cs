@@ -622,6 +622,14 @@
                     filerInputFields.Add(relationField);
                 }
 
+                var orField = new InputField
+                {
+                    Name = "or",
+                    Type = Type.CreateList(Kinds.InputObject, $"{table.Key}Filter"),
+                };
+
+                filerInputFields.Add(orField);
+
                 ret.Add(new Element
                 {
                     Name = $"{table.Key}Filter",
