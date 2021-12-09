@@ -21,9 +21,10 @@
         private const string IntrospectionCacheKey = "__IntrospectionData";
 
         private static readonly string[] FilterOperatorsInt = { "equals", "notEquals", "less", "greater", "lessOrEquals", "greaterOrEquals" };
-        private static readonly string[] FilterOperatorsText = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends", "equalsNoCase" };
+        private static readonly string[] FilterOperatorsText = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends", "equalsNoCase", "jsquery" };
         private static readonly string[] FilterOperatorsBool = { "isNull" };
         private static readonly string[] FilterOperatorsArray = { "in" };
+        private static readonly string[] FilterOperatorsObject = { "children" };
 
         private static readonly string[] NumericTypes = { "integer", "bigint", "real", "double_precision", "numeric" };
         private static readonly string[] DateTypes = { "timestamp", "date", "time" };
@@ -539,6 +540,12 @@
             {
                 new Element
                 {
+                    Name = "FreeFieldsFilter",
+                    Kind = Kinds.InputObject,
+                    InputFields = new List<InputField>(),
+                },
+                new Element
+                {
                     Name = "OperatorFilter",
                     Kind = Kinds.InputObject,
                     InputFields = FilterOperatorsText
@@ -565,6 +572,12 @@
                             Name = x,
                             Description = $"'{x}' operator.",
                             Type = Type.CreateList(Kinds.Scalar, DataTypes.Integer),
+                        }))
+                        .Union(FilterOperatorsObject.Select(x => new InputField
+                        {
+                            Name = x,
+                            Description = $"'{x}' operator.",
+                            Type = new Type(Kinds.InputObject, "FreeFieldsFilter"),
                         }))
                         .ToList(),
                 },
