@@ -21,8 +21,14 @@
         /// <summary> Identified user can change data </summary>
         public const int UserWrite = 0b10000;
 
+        /// <summary> Identified user can read and change data </summary>
+        public const int UserAll = UserRead | UserWrite;
+
         /// <summary> Identified user can change only own records </summary>
         public const int UserWriteOwn = 0b100000;
+
+        /// <summary> Identified user can read and change only own records </summary>
+        public const int UserAllOwn = UserReadOwn | UserWriteOwn;
 
         /// <summary> This is a table of user accounts </summary>
         public const int UserTable = 0b1000000;
