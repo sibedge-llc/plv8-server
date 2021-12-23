@@ -31,9 +31,10 @@
                 var options = new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    IgnoreNullValues = true,
                 };
 
-                return $"'{JsonSerializer.Serialize(authData, options)}'";
+                return JsonSerializer.Serialize(authData, options);
             }
             else
             {

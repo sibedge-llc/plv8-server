@@ -21,7 +21,7 @@
         private const string IntrospectionCacheKey = "__IntrospectionData";
 
         private static readonly string[] FilterOperatorsInt = { "equals", "notEquals", "less", "greater", "lessOrEquals", "greaterOrEquals" };
-        private static readonly string[] FilterOperatorsText = { "less", "greater", "lessOrEquals", "greaterOrEquals", "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends", "equalsNoCase", "jsquery" };
+        private static readonly string[] FilterOperatorsText = { "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends", "equalsNoCase", "jsquery" };
         private static readonly string[] FilterOperatorsBool = { "isNull" };
         private static readonly string[] FilterOperatorsArray = { "in" };
         private static readonly string[] FilterOperatorsObject = { "children" };
@@ -86,7 +86,7 @@
                     }
                 }
 
-                string authJson = authData.Serialize() ?? "NULL";
+                string authJson = authData != null ? $"'{authData.Serialize()}'" : "NULL";
 
                 var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}', {authJson});";
                 json = await this.connection.QueryFirstAsync<string>(sql);

@@ -1,5 +1,7 @@
 ﻿namespace Sibedge.Plv8Server.Models
 {
+    using System.Collections.Generic;
+
     /// <summary> Authorization data </summary>
     public class AuthData
     {
@@ -8,5 +10,8 @@
 
         /// <summary> Anonymous user </summary>
         public bool IsAnonymous => !this.UserId.HasValue;
+
+        /// <summary> User Id </summary>
+        public Dictionary<string, FieldFilter> Condition { get; set; }
     }
 }
