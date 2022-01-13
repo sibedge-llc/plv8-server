@@ -19,5 +19,8 @@
 
         /// <summary> Default primary key field names list </summary>
         public IList<string> DefaultKeys { get; set; }
+
+        /// <summary> Settings for write audit </summary>
+        public AuditSettings Audit { get; set; }
     }
 }

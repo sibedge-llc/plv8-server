@@ -1,8 +1,10 @@
 ﻿namespace Sibedge.Plv8Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Dapper;
     using Helpers;
@@ -28,11 +30,16 @@
         /// <param name="idKeys"> Primary key fields </param>
         /// <param name="operation"> Data change operation </param>
         /// <param name="authData"> Authorization data </param>
-        public Task<string> Change(string tableName, string data, IList<string> idKeys, ChangeOperation operation, AuthData authData)
+        public async Task<string> Change(
+            string tableName,
+            string data,
+            IList<string> idKeys,
+            ChangeOperation operation,
+            AuthData authData)
         {
             var sql = "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema, @user::jsonb);";
 
-            return this.connection.QueryFirstAsync<string>(
+            var result = await this.connection.QueryFirstAsync<string>(
                 sql,
                 new
                 {
@@ -43,6 +50,54 @@
                     schema = this.settings.Schema,
                     user = authData.Serialize(),
                 });
+
+            if (this.settings.Audit?.Enabled == true)
+            {
+                bool isChanged = false;
+
+                if (operation == ChangeOperation.Delete)
+                {
+                    var resultData = JsonSerializer.Deserialize<List<int>>(result);
+                    isChanged = resultData?.FirstOrDefault() > 0;
+                }
+                else
+                {
+                    var resultData = JsonSerializer.Deserialize<List<JsonElement>>(result);
+                    if (resultData.Any())
+                    {
+                        var value = resultData.First();
+                        if (value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var i))
+                        {
+                            isChanged = i > 0;
+                        }
+                        else
+                        {
+                            isChanged = true;
+                        }
+                    }
+                }
+
+                if (isChanged)
+                {
+                    var auditSql = $@"INSERT INTO ""{this.settings.Audit.Schema}"".""{this.settings.Audit.TableName}""
+                        (table_name, operation, account_id, made, query, result) VALUES
+                        (@tableName, @operation, @accountId, @made, @data::jsonb, @result::jsonb)";
+
+                    await this.connection.ExecuteAsync(
+                        auditSql,
+                        new
+                        {
+                            tableName,
+                            operation = operation.GetDescription(),
+                            accountId = authData?.UserId ?? 0,
+                            made = DateTime.UtcNow,
+                            data,
+                            result,
+                        });
+                }
+            }
+
+            return result;
         }
     }
 }
