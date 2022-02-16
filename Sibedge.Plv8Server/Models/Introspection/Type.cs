@@ -1,7 +1,5 @@
 ﻿namespace Sibedge.Plv8Server.Models.Introspection
 {
-    using Newtonsoft.Json;
-
     /// <summary> GraphQL introspection type </summary>
     public class Type
     {
@@ -22,15 +20,12 @@
         }
 
         /// <summary> Type kind </summary>
-        [JsonProperty("kind")]
         public string Kind { get; set; }
 
         /// <summary> Type name </summary>
-        [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary> Parent type </summary>
-        [JsonProperty("ofType")]
         public Type OfType { get; set; }
 
         /// <summary> Creates NotNull type </summary>

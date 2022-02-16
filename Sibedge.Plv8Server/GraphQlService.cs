@@ -67,7 +67,12 @@
                     },
                 };
 
-                json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+
+                json = JsonSerializer.Serialize(data, options);
 
                 this.memoryCache.Set(IntrospectionCacheKey, json);
             }
