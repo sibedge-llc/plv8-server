@@ -16,7 +16,7 @@
     using Type = Models.Introspection.Type;
 
     /// <summary> GraphQL service </summary>
-    public class GraphQlService
+    public class GraphQlService : DataServiceBase
     {
         private const string IntrospectionCacheKey = "__IntrospectionData";
 
@@ -31,15 +31,12 @@
         private static readonly string[] DateAggFunctions = { "max", "min" };
         private static readonly string[] AggFunctions = new[] { "avg", "sum" }.Union(DateAggFunctions).ToArray();
 
-        private readonly IDbConnection connection;
-        private readonly Plv8Settings settings;
         private readonly IMemoryCache memoryCache;
 
         /// <summary> Initializes a new instance of the <see cref="GraphQlService"/> class. </summary>
         public GraphQlService(IDbConnection connection, IOptions<Plv8Settings> settings, IMemoryCache memoryCache)
+            : base(connection, settings.Value)
         {
-            this.connection = connection;
-            this.settings = settings.Value;
             this.memoryCache = memoryCache;
         }
 
@@ -93,8 +90,8 @@
 
                 string authJson = authData != null ? $"'{authData.Serialize()}'" : "NULL";
 
-                var sql = $"SELECT graphql.execute('{query.Query}', '{this.settings.Schema}', {authJson});";
-                json = await this.connection.QueryFirstAsync<string>(sql);
+                var sql = $"SELECT graphql.execute('{query.Query}', '{this.Settings.Schema}', {authJson});";
+                json = await this.Connection.QueryFirstAsync<string>(sql);
             }
 
             return json;
@@ -189,23 +186,13 @@
             return ret;
         }
 
-        private Task<IEnumerable<FieldInfo>> GetFieldInfo()
-        {
-            var sql = $@"SELECT gc.table_name AS ""TableName"", gc.column_name AS ""ColumnName"",
-                          ic.data_type AS ""DataType"", ic.is_nullable='YES' AS ""IsNullable"" FROM graphql.schema_columns gc
-                        LEFT JOIN information_schema.columns ic ON gc.table_name=ic.table_name AND gc.column_name=ic.column_name
-                          WHERE ic.table_schema::name = '{this.settings.Schema}'::name;";
-
-            return this.connection.QueryAsync<FieldInfo>(sql);
-        }
-
         private Task<IEnumerable<ForeignKeyInfo>> GetForeignKeyInfo()
         {
             var sql = @"SELECT table_name AS ""TableName"", column_name AS ""ColumnName"",
                           foreign_table_name AS ""ForeignTableName"", foreign_column_name AS ""ForeignColumnName""
                         FROM graphql.schema_foreign_keys";
 
-            return this.connection.QueryAsync<ForeignKeyInfo>(sql);
+            return this.Connection.QueryAsync<ForeignKeyInfo>(sql);
         }
 
         private Element CreateNode(List<FieldInfo> fieldInfoList)
@@ -288,8 +275,8 @@
 
                 ret.Fields.Add(new Field
                 {
-                    Name = tableName + this.settings.AggPostfix,
-                    Type = new Type(Kinds.InputObject, tableName + this.settings.AggPostfix),
+                    Name = tableName + this.Settings.AggPostfix,
+                    Type = new Type(Kinds.InputObject, tableName + this.Settings.AggPostfix),
                     Args = new List<InputField>
                     {
                         new InputField
@@ -333,7 +320,7 @@
 
                 foreach (var column in table)
                 {
-                    bool isIdColumn = column.ColumnName.ToLowerInvariant() == this.settings.IdField.ToLowerInvariant();
+                    bool isIdColumn = column.ColumnName.ToLowerInvariant() == this.Settings.IdField.ToLowerInvariant();
 
                     var dataTypeName = isIdColumn
                         ? "Id"
@@ -360,8 +347,8 @@
                 {
                     element.Fields.Add(new Field
                     {
-                        Name = singleLink.ColumnName.EndsWith(this.settings.IdPostfix)
-                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
+                        Name = singleLink.ColumnName.EndsWith(this.Settings.IdPostfix)
+                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.Settings.IdPostfix.Length)
                             : singleLink.ColumnName,
                         Type = new Type(Kinds.Object, singleLink.ForeignTableName),
                         Args = new List<InputField>
@@ -404,8 +391,8 @@
 
                     element.Fields.Add(new Field
                     {
-                        Name = multipleLink.TableName + this.settings.AggPostfix,
-                        Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}{this.settings.AggPostfix}Nested"),
+                        Name = multipleLink.TableName + this.Settings.AggPostfix,
+                        Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}{this.Settings.AggPostfix}Nested"),
                         Args = new List<InputField>
                         {
                             new InputField
@@ -429,7 +416,7 @@
 
             Expression<Func<string, string>> selectExpr = x => x;
 
-            if (this.settings.AggPostfix[0] == '_')
+            if (this.Settings.AggPostfix[0] == '_')
             {
                 selectExpr = x => x + "_";
             }
@@ -437,7 +424,7 @@
             var dateAggFunctions = DateAggFunctions.AsQueryable().Select(selectExpr).ToArray();
             var aggFunctions = AggFunctions.AsQueryable().Select(selectExpr).ToArray();
 
-            var distinctStart = "distinct" + ((this.settings.AggPostfix[0] == '_') ? "_" : string.Empty);
+            var distinctStart = "distinct" + ((this.Settings.AggPostfix[0] == '_') ? "_" : string.Empty);
 
             var tables = fieldInfoList.GroupBy(x => x.TableName);
 
@@ -451,7 +438,7 @@
 
                 var elementRoot = new Element
                 {
-                    Name = table.Key + this.settings.AggPostfix,
+                    Name = table.Key + this.Settings.AggPostfix,
                     Description = "Aggregate function for " + table.Key,
                     Interfaces = new List<Type> { new Type(Kinds.Interface, "Node") },
                     Kind = Kinds.Object,
@@ -468,7 +455,7 @@
 
                 foreach (var column in table)
                 {
-                    if (column.ColumnName.ToLowerInvariant() == this.settings.IdField.ToLowerInvariant())
+                    if (column.ColumnName.ToLowerInvariant() == this.Settings.IdField.ToLowerInvariant())
                     {
                         continue;
                     }
@@ -481,7 +468,7 @@
                         Type = Type.CreateList(Kinds.Object, dataTypeName),
                     });
 
-                    if (!column.ColumnName.EndsWith(this.settings.IdPostfix))
+                    if (!column.ColumnName.EndsWith(this.Settings.IdPostfix))
                     {
                         var aggFunctionsList = Array.Empty<string>();
 
@@ -510,8 +497,8 @@
                 {
                     element.Fields.Add(new Field
                     {
-                        Name = singleLink.ColumnName.EndsWith(this.settings.IdPostfix)
-                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
+                        Name = singleLink.ColumnName.EndsWith(this.Settings.IdPostfix)
+                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.Settings.IdPostfix.Length)
                             : singleLink.ColumnName,
                         Type = new Type(Kinds.Object, singleLink.ForeignTableName),
                         Args = new List<InputField>
@@ -590,7 +577,7 @@
 
             Expression<Func<string, string>> selectExpr = x => x;
 
-            if (this.settings.AggPostfix[0] == '_')
+            if (this.Settings.AggPostfix[0] == '_')
             {
                 selectExpr = x => x + "_";
             }
@@ -615,8 +602,8 @@
                 {
                     var relationField = new InputField
                     {
-                        Name = singleLink.ColumnName.EndsWith(this.settings.IdPostfix)
-                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.settings.IdPostfix.Length)
+                        Name = singleLink.ColumnName.EndsWith(this.Settings.IdPostfix)
+                            ? singleLink.ColumnName.Substring(0, singleLink.ColumnName.Length - this.Settings.IdPostfix.Length)
                             : singleLink.ColumnName,
                         Type = new Type(Kinds.Scalar, DataTypes.Boolean),
                     };
@@ -686,8 +673,8 @@
                 };
 
                 foreach (var column in table
-                    .Where(x => !x.ColumnName.EndsWith(this.settings.IdPostfix)
-                                && x.ColumnName != this.settings.IdField))
+                    .Where(x => !x.ColumnName.EndsWith(this.Settings.IdPostfix)
+                                && x.ColumnName != this.Settings.IdField))
                 {
                     var dataTypeName = column.DataType.ToTypeName();
                     var aggFunctionsList = Array.Empty<string>();
