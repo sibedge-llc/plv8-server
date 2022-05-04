@@ -14,5 +14,14 @@
 
         /// <summary> Is nullable </summary>
         public bool IsNullable { get; set; }
+
+        /// <summary> Is always auto-generated (read only) </summary>
+        public bool IsGenerated { get; set; }
+
+        /// <summary> Is primary key </summary>
+        public bool IsPrimaryKey { get; set; }
+
+        /// <summary> Has default value </summary>
+        public bool HasDefaultValue { get; set; }
     }
 }
