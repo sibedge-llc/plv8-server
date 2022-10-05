@@ -108,6 +108,15 @@
                 return ret;
             }
 
+            if (element.ValueKind == JsonValueKind.Array)
+            {
+                var enumerator = element.EnumerateArray().GetEnumerator();
+                var arrayItems = enumerator.Select(this.GetStringValue).ToList();
+
+                var ret = $"[{string.Join(',', arrayItems)}]";
+                return ret;
+            }
+
             return element.ValueKind switch
             {
                 JsonValueKind.Null => "null",
