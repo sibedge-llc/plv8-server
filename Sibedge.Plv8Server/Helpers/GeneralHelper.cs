@@ -3,6 +3,7 @@
     using System.ComponentModel;
     using System.Reflection;
     using System.Text.Json;
+    using System.Text.Json.Serialization;
     using Models;
 
     /// <summary> General helper </summary>
@@ -31,7 +32,7 @@
                 var options = new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    IgnoreNullValues = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 };
 
                 return JsonSerializer.Serialize(authData, options);
