@@ -2,6 +2,7 @@
 {
     using System.ComponentModel;
     using System.Reflection;
+    using System.Text;
     using System.Text.Json;
     using System.Text.Json.Serialization;
     using Models;
@@ -41,6 +42,14 @@
             {
                 return null;
             }
+        }
+
+        /// <summary> Appends whitespace </summary>
+        /// <param name="sb"> StringBuilder </param>
+        /// <param name="level"> Hierarchy level </param>
+        public static void AppendWhitespace(this StringBuilder sb, int level)
+        {
+            sb.Append(' ', level * 2);
         }
     }
 }

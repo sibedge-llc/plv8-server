@@ -1,4 +1,4 @@
-﻿namespace Sibedge.Plv8Server.Models
+﻿namespace Sibedge.Plv8Server.Models.GraphQlBuilder
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;

@@ -1,6 +1,7 @@
 ﻿namespace Sibedge.Plv8Server.Models
 {
     using System.Collections.Generic;
+    using GraphQlBuilder;
 
     /// <summary> Authorization data </summary>
     public class AuthData
