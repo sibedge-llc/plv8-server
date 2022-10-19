@@ -23,7 +23,7 @@
         private static readonly string[] FilterOperatorsInt = { "equals", "notEquals", "less", "greater", "lessOrEquals", "greaterOrEquals" };
         private static readonly string[] FilterOperatorsText = { "contains", "notContains", "arrayContains", "arrayNotContains", "starts", "ends", "equalsNoCase", "jsquery" };
         private static readonly string[] FilterOperatorsBool = { "isNull" };
-        private static readonly string[] FilterOperatorsArray = { "in" };
+        private static readonly string[] FilterOperatorsArray = { "in", "notIn" };
         private static readonly string[] FilterOperatorsObject = { "children" };
 
         private static readonly string[] NumericTypes = { "integer", "bigint", "real", "double_precision", "numeric" };
