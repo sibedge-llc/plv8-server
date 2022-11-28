@@ -14,5 +14,8 @@
 
         /// <summary> Foreign column name </summary>
         public string ForeignColumnName { get; set; }
+
+        /// <summary> Is Array </summary>
+        public bool IsArray { get; set; }
     }
 }

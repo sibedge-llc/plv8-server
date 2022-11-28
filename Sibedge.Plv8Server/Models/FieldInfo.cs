@@ -23,5 +23,8 @@
 
         /// <summary> Has default value </summary>
         public bool HasDefaultValue { get; set; }
+
+        /// <summary> Is table function </summary>
+        public bool IsFunction { get; set; }
     }
 }

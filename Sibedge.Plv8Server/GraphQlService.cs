@@ -201,7 +201,8 @@
         private Task<IEnumerable<ForeignKeyInfo>> GetForeignKeyInfo()
         {
             var sql = @"SELECT table_name AS ""TableName"", column_name AS ""ColumnName"",
-                          foreign_table_name AS ""ForeignTableName"", foreign_column_name AS ""ForeignColumnName""
+                          foreign_table_name AS ""ForeignTableName"", foreign_column_name AS ""ForeignColumnName"",
+                          is_array AS ""IsArray""
                         FROM graphql.schema_foreign_keys";
 
             return this.Connection.QueryAsync<ForeignKeyInfo>(sql);
@@ -244,8 +245,9 @@
                 Fields = new List<Field>(),
             };
 
-            foreach (var tableName in fieldInfoList.Select(x => x.TableName).Distinct())
+            foreach (var table in fieldInfoList.GroupBy(x => x.TableName))
             {
+                var tableName = table.Key;
                 ret.Fields.Add(new Field
                 {
                     Name = tableName,
@@ -285,29 +287,32 @@
                     },
                 });
 
-                ret.Fields.Add(new Field
+                if (!table.Any(x => x.IsFunction))
                 {
-                    Name = tableName + this.Settings.AggPostfix,
-                    Type = new Type(Kinds.InputObject, tableName + this.Settings.AggPostfix),
-                    Args = new List<InputField>
+                    ret.Fields.Add(new Field
                     {
-                        new InputField
+                        Name = tableName + this.Settings.AggPostfix,
+                        Type = new Type(Kinds.InputObject, tableName + this.Settings.AggPostfix),
+                        Args = new List<InputField>
                         {
-                            Name = "filter",
-                            Type = new Type(Kinds.InputObject, $"{tableName}Filter"),
+                            new InputField
+                            {
+                                Name = "filter",
+                                Type = new Type(Kinds.InputObject, $"{tableName}Filter"),
+                            },
+                            new InputField
+                            {
+                                Name = "groupBy",
+                                Type = new Type(Kinds.Enum, $"{tableName}OrderBy"),
+                            },
+                            new InputField
+                            {
+                                Name = "aggFilter",
+                                Type = new Type(Kinds.InputObject, $"{tableName}AggFilter"),
+                            },
                         },
-                        new InputField
-                        {
-                            Name = "groupBy",
-                            Type = new Type(Kinds.Enum, $"{tableName}OrderBy"),
-                        },
-                        new InputField
-                        {
-                            Name = "aggFilter",
-                            Type = new Type(Kinds.InputObject, $"{tableName}AggFilter"),
-                        },
-                    },
-                });
+                    });
+                }
             }
 
             return ret;
@@ -374,9 +379,26 @@
                     });
                 }
 
-                var multipleLinks = foreignKeyList.Where(x => x.ForeignTableName == table.Key);
+                var multipleLinks = foreignKeyList
+                    .Where(x => x.ForeignTableName == table.Key)
+                    .Union(foreignKeyList.Where(x => x.IsArray && x.TableName == table.Key)
+                        .Select(x => new ForeignKeyInfo
+                        {
+                            TableName = x.ForeignTableName,
+                            ForeignTableName = x.TableName,
+                            ColumnName = x.ForeignColumnName,
+                            ForeignColumnName = x.ColumnName,
+                            IsArray = x.IsArray,
+                        }));
+
                 foreach (var multipleLink in multipleLinks)
                 {
+                    var foreignTable = tables.FirstOrDefault(t => t.Key == multipleLink.TableName);
+                    if (foreignTable?.Any(x => x.IsFunction) == true)
+                    {
+                        continue;
+                    }
+
                     element.Fields.Add(new Field
                     {
                         Name = multipleLink.TableName,
@@ -401,19 +423,25 @@
                         },
                     });
 
-                    element.Fields.Add(new Field
+                    // TODO: implement aggregate functions for array fields
+                    if (!multipleLink.IsArray)
                     {
-                        Name = multipleLink.TableName + this.Settings.AggPostfix,
-                        Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}{this.Settings.AggPostfix}Nested"),
-                        Args = new List<InputField>
+                        element.Fields.Add(new Field
                         {
-                            new InputField
+                            Name = multipleLink.TableName + this.Settings.AggPostfix,
+                            Type = new Type(
+                                Kinds.InputObject,
+                                $"{multipleLink.TableName}{this.Settings.AggPostfix}Nested"),
+                            Args = new List<InputField>
                             {
-                                Name = "filter",
-                                Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter"),
+                                new InputField
+                                {
+                                    Name = "filter",
+                                    Type = new Type(Kinds.InputObject, $"{multipleLink.TableName}Filter"),
+                                },
                             },
-                        },
-                    });
+                        });
+                    }
                 }
 
                 ret.Add(element);
@@ -438,7 +466,9 @@
 
             var distinctStart = "distinct" + ((this.Settings.AggPostfix[0] == '_') ? "_" : string.Empty);
 
-            var tables = fieldInfoList.GroupBy(x => x.TableName);
+            var tables = fieldInfoList
+                .Where(x => !x.IsFunction)
+                .GroupBy(x => x.TableName);
 
             foreach (var table in tables)
             {
@@ -674,50 +704,53 @@
                     }).ToList(),
                 });
 
-                var aggFilerInputFields = new List<InputField>
+                if (!table.Any(x => x.IsFunction))
                 {
-                    new InputField
+                    var aggFilerInputFields = new List<InputField>
                     {
-                        Name = "count",
-                        Description = "count",
-                        Type = new Type(Kinds.Object, "OperatorFilter"),
-                    },
-                };
+                        new InputField
+                        {
+                            Name = "count",
+                            Description = "count",
+                            Type = new Type(Kinds.Object, "OperatorFilter"),
+                        },
+                    };
 
-                foreach (var column in table
-                    .Where(x => !x.ColumnName.EndsWith(this.Settings.IdPostfix)
-                                && x.ColumnName != this.Settings.IdField))
-                {
-                    var dataTypeName = column.DataType.ToTypeName();
-                    var aggFunctionsList = Array.Empty<string>();
+                    foreach (var column in table
+                                 .Where(x => !x.ColumnName.EndsWith(this.Settings.IdPostfix)
+                                             && x.ColumnName != this.Settings.IdField))
+                    {
+                        var dataTypeName = column.DataType.ToTypeName();
+                        var aggFunctionsList = Array.Empty<string>();
 
-                    if (NumericTypes.Contains(dataTypeName))
-                    {
-                        aggFunctionsList = aggFunctions;
-                    }
-                    else if (DateTypes.Any(x => dataTypeName.StartsWith(x)))
-                    {
-                        aggFunctionsList = dateAggFunctions;
+                        if (NumericTypes.Contains(dataTypeName))
+                        {
+                            aggFunctionsList = aggFunctions;
+                        }
+                        else if (DateTypes.Any(x => dataTypeName.StartsWith(x)))
+                        {
+                            aggFunctionsList = dateAggFunctions;
+                        }
+
+                        foreach (var aggFunction in aggFunctionsList)
+                        {
+                            aggFilerInputFields.Add(
+                                new InputField
+                                {
+                                    Name = aggFunction + column.ColumnName,
+                                    Description = aggFunction + column.ColumnName,
+                                    Type = new Type(Kinds.Object, "OperatorFilter"),
+                                });
+                        }
                     }
 
-                    foreach (var aggFunction in aggFunctionsList)
+                    ret.Add(new Element
                     {
-                        aggFilerInputFields.Add(
-                            new InputField
-                            {
-                                Name = aggFunction + column.ColumnName,
-                                Description = aggFunction + column.ColumnName,
-                                Type = new Type(Kinds.Object, "OperatorFilter"),
-                            });
-                    }
+                        Name = $"{table.Key}AggFilter",
+                        Kind = Kinds.InputObject,
+                        InputFields = aggFilerInputFields,
+                    });
                 }
-
-                ret.Add(new Element
-                {
-                    Name = $"{table.Key}AggFilter",
-                    Kind = Kinds.InputObject,
-                    InputFields = aggFilerInputFields,
-                });
             }
 
             return ret;
