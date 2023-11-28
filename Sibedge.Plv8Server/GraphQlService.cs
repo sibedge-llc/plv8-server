@@ -38,25 +38,28 @@
                     return cachedJson;
                 }
 
-                var sql = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "SELECT graphql.introspection('{0}', '{1}', '{2}', '{3}');",
-                    this.Settings.Schema,
-                    this.Settings.IdField,
-                    this.Settings.IdPostfix,
-                    this.Settings.AggPostfix);
+                var sql = "SELECT graphql.introspection(@schema, @idField, @idPostfix, @aggPostfix);";
 
-                json = await this.Connection.QueryFirstAsync<string>(sql);
+                json = await this.Connection.QueryFirstAsync<string>(sql, new
+                {
+                    schema = this.Settings.Schema,
+                    idField = this.Settings.IdField,
+                    idPostfix = this.Settings.IdPostfix,
+                    aggPostfix = this.Settings.AggPostfix,
+                });
 
                 this.memoryCache.Set(IntrospectionCacheKey, json);
             }
             else
             {
-                string authJson = authData != null ? $"'{authData.Serialize()}'" : "NULL";
-                string variablesJson = query.Variables?.Any() == true ? $"'{query.Variables.Serialize()}'" : "NULL";
-
-                var sql = $"SELECT graphql.execute('{query.Query}', '{this.Settings.Schema}', {authJson}, {variablesJson});";
-                json = await this.Connection.QueryFirstAsync<string>(sql);
+                var sql = "SELECT graphql.execute(@query, @schema, @user::jsonb, @variables::jsonb);";
+                json = await this.Connection.QueryFirstAsync<string>(sql, new
+                {
+                    query = query.Query,
+                    schema = this.Settings.Schema,
+                    user = authData.Serialize(),
+                    variables = query.Variables.Serialize(),
+                });
             }
 
             return json;
