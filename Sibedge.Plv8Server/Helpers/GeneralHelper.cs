@@ -23,12 +23,12 @@
             return attributes?.Description ?? source.ToString();
         }
 
-        /// <summary> Serializes authorization data </summary>
-        /// <param name="authData"> Authorization data </param>
+        /// <summary> Serializes any data </summary>
+        /// <param name="data"> Data to serialize </param>
         /// <returns> JSON </returns>
-        public static string Serialize(this AuthData authData)
+        public static string Serialize(this object data)
         {
-            if (authData != null)
+            if (data != null)
             {
                 var options = new JsonSerializerOptions
                 {
@@ -36,7 +36,7 @@
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 };
 
-                return JsonSerializer.Serialize(authData, options);
+                return JsonSerializer.Serialize(data, options);
             }
             else
             {

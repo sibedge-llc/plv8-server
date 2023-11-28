@@ -53,7 +53,7 @@
                     sb.Append("filter: ");
                     var filterJson = JsonSerializer.Serialize(this.Filter, options);
                     var filterElement = JsonSerializer.Deserialize<JsonElement>(filterJson);
-                    sb.Append(GraphQlService.GetArgumentStringValue(filterElement));
+                    sb.Append(filterElement.GetArgumentStringValue());
                     hasSomething = true;
                 }
 
