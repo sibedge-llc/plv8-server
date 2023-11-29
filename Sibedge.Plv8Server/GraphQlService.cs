@@ -1,8 +1,6 @@
 ﻿namespace Sibedge.Plv8Server
 {
     using System.Data;
-    using System.Globalization;
-    using System.Linq;
     using System.Threading.Tasks;
     using Dapper;
     using Helpers;
@@ -53,13 +51,16 @@
             else
             {
                 var sql = "SELECT graphql.execute(@query, @schema, @user::jsonb, @variables::jsonb);";
-                json = await this.Connection.QueryFirstAsync<string>(sql, new
+
+                var args = new
                 {
                     query = query.Query,
                     schema = this.Settings.Schema,
                     user = authData.Serialize(),
                     variables = query.Variables.Serialize(),
-                });
+                };
+
+                json = await this.Connection.QueryFirstAsync<string>(sql, args);
             }
 
             return json;
