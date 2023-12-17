@@ -29,7 +29,7 @@
         {
             string json;
 
-            if (query.OperationName == "IntrospectionQuery")
+            if (query.IsIntrospectionQuery())
             {
                 if (this.memoryCache.TryGetValue(IntrospectionCacheKey, out string cachedJson))
                 {

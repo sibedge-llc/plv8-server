@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Text.Json;
+    using Models;
 
     /// <summary> Helper for GraphQL </summary>
     public static class GraphQlHelper
@@ -47,6 +48,16 @@
                 JsonValueKind.String => $"\"{element}\"",
                 _ => element.ToString(),
             };
+        }
+
+        /// <summary>
+        /// Checks is it introspection (schema) query.
+        /// </summary>
+        /// <param name="query"><see cref="GraphQlQuery"/></param>
+        /// <returns> True for introspection (schema) queries, false for data queries. </returns>
+        public static bool IsIntrospectionQuery(this GraphQlQuery query)
+        {
+            return query.OperationName == "IntrospectionQuery";
         }
     }
 }
