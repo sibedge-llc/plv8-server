@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="3.3.0">
+    <id>Sibedge.Plv8Server</id>
+    <version>1.0.0</version>
+    <title>PLV8 Framework server library</title>
+    <authors>Sibedge</authors>
+    <owners>Alexey Fadeev</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>images\icon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/sibedge-llc/plv8-server</projectUrl>
+    <description>Library for developing Asp.NET applications using PLV8 Framework.</description>
+    <releaseNotes>https://github.com/sibedge-llc/plv8-server/blob/master/changes.txt</releaseNotes>
+    <copyright>© Sibedge. All rights reserved.</copyright>
+    <tags>PLV8 dotnet</tags>
+    <repository type="git" url="https://github.com/sibedge-llc/plv8-server.git" branch="master" commit="923d3454dabeb8795b0f96319ae5dac49273ae1f" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.2.5" />
+        <dependency id="Microsoft.Extensions.Caching.Memory" version="8.0.0" />
+        <dependency id="Npgsql" version="8.0.3" />
+        <dependency id="Dapper" version="2.1.35" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\README.md" target="README.md" />
+    <file src="icon.png" target="images\" />
+  </files>
+</package>

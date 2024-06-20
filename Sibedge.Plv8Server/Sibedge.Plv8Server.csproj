@@ -10,5 +10,11 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
     <PackageReference Include="Npgsql" Version="8.0.3" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="icon.png" PackagePath="images" Pack="true" />
+	<None Include="Sibedge.Plv8Server.nuspec" PackagePath="Sibedge.Plv8Server.nuspec" Pack="true" />
+	<None Include="..\README.md" PackagePath="README.md" Pack="true" />
+  </ItemGroup>
 
 </Project>
