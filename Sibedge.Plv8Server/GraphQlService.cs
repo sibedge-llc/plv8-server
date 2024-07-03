@@ -1,8 +1,8 @@
 ﻿namespace Sibedge.Plv8Server
 {
+    using System.Collections.Generic;
     using System.Data;
     using System.Threading.Tasks;
-    using Dapper;
     using Helpers;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Options;
@@ -11,7 +11,7 @@
     /// <summary> GraphQL service </summary>
     public class GraphQlService : DataServiceBase
     {
-        private const string IntrospectionCacheKey = "__IntrospectionData";
+        private const string IntrospectionCacheKey = "__GraphQlIntrospectionData";
 
         private readonly IMemoryCache memoryCache;
 
@@ -38,13 +38,15 @@
 
                 var sql = "SELECT graphql.introspection(@schema, @idField, @idPostfix, @aggPostfix);";
 
-                json = await this.Connection.QueryFirstAsync<string>(sql, new
+                var parameters = new Dictionary<string, object>
                 {
-                    schema = this.Settings.Schema,
-                    idField = this.Settings.IdField,
-                    idPostfix = this.Settings.IdPostfix,
-                    aggPostfix = this.Settings.AggPostfix,
-                });
+                    { "schema", this.Settings.Schema },
+                    { "idField", this.Settings.IdField },
+                    { "idPostfix", this.Settings.IdPostfix },
+                    { "aggPostfix", this.Settings.AggPostfix },
+                };
+
+                json = await this.Connection.ReadJson(sql, parameters);
 
                 this.memoryCache.Set(IntrospectionCacheKey, json);
             }
@@ -52,15 +54,15 @@
             {
                 var sql = "SELECT graphql.execute(@query, @schema, @user::jsonb, @variables::jsonb);";
 
-                var args = new
+                var parameters = new Dictionary<string, object>
                 {
-                    query = query.Query,
-                    schema = this.Settings.Schema,
-                    user = authData.Serialize(),
-                    variables = query.Variables.Serialize(),
+                    { "query", query.Query },
+                    { "schema", this.Settings.Schema },
+                    { "user", authData.Serialize() },
+                    { "variables", query.Variables.Serialize() },
                 };
 
-                json = await this.Connection.QueryFirstAsync<string>(sql, args);
+                json = await this.Connection.ReadJson(sql, parameters);
             }
 
             return json;

@@ -2,7 +2,7 @@
 
 Library for developing Asp.NET applications using PLV8 Framework.
 
-See the demonstration application [here](https://github.com/alexeyfadeev/plv8-backend-demo).
+See the demonstration application [here](https://github.com/sibedge-llc/plv8-backend-demo).
 
 ## PLV8 Framework
 

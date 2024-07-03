@@ -6,18 +6,22 @@
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using Dapper;
     using Helpers;
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Options;
     using Models;
 
     /// <summary> Service for inserting / updating data </summary>
     public class ChangeService : DataServiceBase
     {
+        private const string OpenApiSchemaCacheKey = "__OpenApiSchema";
+        private readonly IMemoryCache memoryCache;
+
         /// <summary> Initializes a new instance of the <see cref="ChangeService"/> class. </summary>
-        public ChangeService(IDbConnection connection, IOptions<Plv8Settings> settings)
+        public ChangeService(IDbConnection connection, IOptions<Plv8Settings> settings, IMemoryCache memoryCache)
             : base(connection, settings.Value)
         {
+            this.memoryCache = memoryCache;
         }
 
         /// <summary> Insert data into table </summary>
@@ -36,17 +40,17 @@
             var sql =
                 "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema, @user::jsonb);";
 
-            var result = await this.Connection.QueryFirstAsync<string>(
-                sql,
-                new
-                {
-                    tableName,
-                    data,
-                    idKeys = idKeys?.Any() == true ? idKeys : this.Settings.DefaultKeys,
-                    operation = operation.GetDescription(),
-                    schema = this.Settings.Schema,
-                    user = authData.Serialize(),
-                });
+            var parameters = new Dictionary<string, object>
+            {
+                { nameof(tableName), tableName },
+                { nameof(data), data },
+                { "idKeys", idKeys?.Any() == true ? idKeys : this.Settings.DefaultKeys },
+                { "operation", operation.GetDescription() },
+                { "schema", this.Settings.Schema },
+                { "user", authData.Serialize() },
+            };
+            
+            var result = await this.Connection.ReadJson(sql, parameters);
 
             if (this.Settings.Audit?.Enabled == true)
             {
@@ -100,20 +104,34 @@
         /// <summary> Returns Open API schema JSON for change methods </summary>
         /// <param name="baseUrl"> Base URL for change endpoints </param>
         /// <param name="filterTables"> Optionally allowed to set tables (other will be ignored) </param>
-        public async Task<string> GetSchema(string baseUrl, IList<string> filterTables = null)
+        public async ValueTask<string> GetSchema(string baseUrl, IList<string> filterTables = null)
         {
+            var key = OpenApiSchemaCacheKey;
+
+            if (filterTables?.Any() == true)
+            {
+                key += "_" + string.Join("_", filterTables);
+            }
+
+            if (this.memoryCache.TryGetValue(key, out string cachedJson))
+            {
+                return cachedJson;
+            }
+
             var sql = "SELECT * FROM plv8.openapi(@baseUrl, @schemaName, @filterTables::jsonb);";
 
-            var result = await this.Connection.QueryFirstAsync<string>(
-                sql,
-                new
-                {
-                    baseUrl,
-                    schemaName = this.Settings.Schema,
-                    filterTables = filterTables?.Serialize(),
-                });
+            var parameters = new Dictionary<string, object>
+            {
+                { nameof(baseUrl), baseUrl },
+                { "schemaName", this.Settings.Schema },
+                { "filterTables", filterTables?.Serialize() },
+            };
 
-            return result;
+            var json = await this.Connection.ReadJson(sql, parameters);
+
+            this.memoryCache.Set(key, json);
+
+            return json;
         }
     }
 }
