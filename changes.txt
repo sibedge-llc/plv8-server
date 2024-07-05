@@ -3,3 +3,7 @@ Revision history for Sibedge Plv8Server
 1.0.0       2024-06-20
             - update to .NET 8
             - GraphQl Itrospection and OpenAPI generation code moved to PLV8
+
+1.1.0       2024-07-05
+            - Dapper dependency removed
+			- OpenAPI schema: memory cache used.

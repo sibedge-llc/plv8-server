@@ -3,8 +3,8 @@
     using System.Data;
     using System.Linq;
     using System.Threading.Tasks;
-    using Dapper;
     using Models;
+    using Sibedge.Plv8Server.Helpers;
 
     /// <summary> Base service for executing stored functions (not only plv8) </summary>
     public abstract class V8FuncServiceBase
@@ -34,7 +34,7 @@
                     x => $"@arg{x.i}",
                     x => x.val is FunctionArgument funcArgValue ? funcArgValue.Value : x.val);
 
-            return this.connection.QueryFirstAsync<string>(sql, new DynamicParameters(argsDict));
+            return this.connection.ReadJson(sql, argsDict);
         }
     }
 }

@@ -12,4 +12,3 @@ The framework simplifies PLV8 development (to create stored functions for Postgr
 The two main purposes of PLV8 Framework are:
 - Use of exisiting universal PLV8 functions that implement CRUD API to PostgreSQL objects.
 - Develop your own PLV8 functions (convenient for reports and complex data structure).
-

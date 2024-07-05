@@ -84,17 +84,17 @@
                         (table_name, operation, account_id, made, query, result) VALUES
                         (@tableName, @operation, @accountId, @made, @data::jsonb, @result::jsonb)";
 
-                    await this.Connection.ExecuteAsync(
-                        auditSql,
-                        new
-                        {
-                            tableName,
-                            operation = operation.GetDescription(),
-                            accountId = authData?.UserId ?? 0,
-                            made = DateTime.UtcNow,
-                            data,
-                            result,
-                        });
+                    var auditParameters = new Dictionary<string, object>
+                    {
+                        { nameof(tableName), tableName },
+                        { nameof(operation), operation.GetDescription() },
+                        { "accountId", authData?.UserId ?? 0 },
+                        { "made", DateTime.UtcNow },
+                        { nameof(data), data },
+                        { nameof(result), result },
+                    };
+                    
+                    await this.Connection.RunCommand(auditSql, auditParameters);
                 }
             }
 
