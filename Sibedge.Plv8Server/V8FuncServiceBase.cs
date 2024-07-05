@@ -32,7 +32,7 @@
             var argsDict = args.Select((val, i) => new { val, i })
                 .ToDictionary(
                     x => $"@arg{x.i}",
-                    x => x.val is FunctionArgument funcArgValue ? funcArgValue.Value : x.val);
+                    x => x.val is FunctionArgument funcArgValue ? funcArgValue.Value : x.val.AsSqlParameter());
 
             return this.connection.ReadJson(sql, argsDict);
         }

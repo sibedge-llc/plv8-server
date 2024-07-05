@@ -19,6 +19,7 @@
     <repository type="git" url="https://github.com/sibedge-llc/plv8-server.git" branch="master" commit="923d3454dabeb8795b0f96319ae5dac49273ae1f" />
     <dependencies>
       <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.AspNetCore.Mvc.Abstractions" version="2.2.0" />
         <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.2.5" />
         <dependency id="Microsoft.Extensions.Caching.Memory" version="8.0.0" />
         <dependency id="Npgsql" version="8.0.3" />

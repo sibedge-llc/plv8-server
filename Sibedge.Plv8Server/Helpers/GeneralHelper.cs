@@ -1,5 +1,6 @@
 ﻿namespace Sibedge.Plv8Server.Helpers
 {
+    using System;
     using System.ComponentModel;
     using System.Reflection;
     using System.Text;
@@ -49,6 +50,12 @@
         public static void AppendWhitespace(this StringBuilder sb, int level)
         {
             sb.Append(' ', level * 2);
+        }
+
+        /// <summary> Value as SQL parameter </summary>
+        internal static object AsSqlParameter(this object data)
+        {
+            return data ?? DBNull.Value;
         }
     }
 }

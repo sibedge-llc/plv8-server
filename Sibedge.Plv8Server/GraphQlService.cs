@@ -58,8 +58,8 @@
                 {
                     { "query", query.Query },
                     { "schema", this.Settings.Schema },
-                    { "user", authData.Serialize() },
-                    { "variables", query.Variables.Serialize() },
+                    { "user", authData.Serialize().AsSqlParameter() },
+                    { "variables", query.Variables.Serialize().AsSqlParameter() },
                 };
 
                 json = await this.Connection.ReadJson(sql, parameters);

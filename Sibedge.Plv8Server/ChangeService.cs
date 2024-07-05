@@ -47,9 +47,9 @@
                 { "idKeys", idKeys?.Any() == true ? idKeys : this.Settings.DefaultKeys },
                 { "operation", operation.GetDescription() },
                 { "schema", this.Settings.Schema },
-                { "user", authData.Serialize() },
+                { "user", authData.Serialize().AsSqlParameter() },
             };
-            
+
             var result = await this.Connection.ReadJson(sql, parameters);
 
             if (this.Settings.Audit?.Enabled == true)
@@ -93,7 +93,7 @@
                         { nameof(data), data },
                         { nameof(result), result },
                     };
-                    
+
                     await this.Connection.RunCommand(auditSql, auditParameters);
                 }
             }
@@ -124,7 +124,7 @@
             {
                 { nameof(baseUrl), baseUrl },
                 { "schemaName", this.Settings.Schema },
-                { "filterTables", filterTables?.Serialize() },
+                { "filterTables", (filterTables?.Serialize()).AsSqlParameter() },
             };
 
             var json = await this.Connection.ReadJson(sql, parameters);
