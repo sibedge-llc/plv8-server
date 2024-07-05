@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -6,13 +7,21 @@ using Npgsql;
 namespace Sibedge.Plv8Server.Helpers
 {
     /// <summary> SQL queries helper </summary>
-    internal static class SqlHelper
+    public static class SqlHelper
     {
         /// <summary> Reads JSON value from PostgreSQL </summary>
-        internal static async Task<string> ReadJson(this IDbConnection connection, string querySql,
+        /// <param name="connection"> Connection to a data source </param>
+        /// <param name="querySql"> SQL query script </param>
+        /// <param name="parameters"> Set of query parameters </param>
+        public static async Task<string> ReadJson(this IDbConnection connection, string querySql,
             IDictionary<string, object> parameters)
         {
             var npqsqlConnection = connection as NpgsqlConnection;
+            if (connection == null)
+            {
+                throw new ArgumentException("Only NpgsqlConnection supported");
+            }
+
             await npqsqlConnection.OpenIfNeeded();
 
             using var command = new NpgsqlCommand(querySql, npqsqlConnection);
@@ -38,10 +47,18 @@ namespace Sibedge.Plv8Server.Helpers
         }
 
         /// <summary> Reads JSON value from PostgreSQL </summary>
-        internal static async Task RunCommand(this IDbConnection connection, string commandSql,
+        /// <param name="connection"> Connection to a data source </param>
+        /// <param name="commandSql"> SQL command script </param>
+        /// <param name="parameters"> Set of query parameters </param>
+        public static async Task RunCommand(this IDbConnection connection, string commandSql,
             IDictionary<string, object> parameters)
         {
             var npqsqlConnection = connection as NpgsqlConnection;
+            if (connection == null)
+            {
+                throw new ArgumentException("Only NpgsqlConnection supported");
+            }
+
             await npqsqlConnection.OpenIfNeeded();
 
             using var command = new NpgsqlCommand(commandSql, npqsqlConnection);
