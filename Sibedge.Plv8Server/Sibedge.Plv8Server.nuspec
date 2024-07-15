@@ -2,13 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="3.3.0">
     <id>Sibedge.Plv8Server</id>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <title>PLV8 Framework server library</title>
     <authors>Sibedge</authors>
     <owners>Alexey Fadeev</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <licenseUrl>https://github.com/sibedge-llc/plv8-server/blob/master/LICENSE</licenseUrl>
     <icon>images\icon.png</icon>
     <readme>README.md</readme>
     <projectUrl>https://github.com/sibedge-llc/plv8-server</projectUrl>
