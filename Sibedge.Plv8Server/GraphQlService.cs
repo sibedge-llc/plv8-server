@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Data;
+    using System.Threading;
     using System.Threading.Tasks;
     using Helpers;
     using Microsoft.Extensions.Caching.Memory;
@@ -24,8 +25,17 @@
 
         /// <summary> Execute graphQL query </summary>
         /// <param name="query"> Query data </param>
+        /// <param name="authData"> Authorization data </param>        
+        public ValueTask<string> PerformQuery(GraphQlQuery query, AuthData authData)
+        {
+            return this.PerformQuery(query, authData, CancellationToken.None);
+        }
+
+        /// <summary> Execute graphQL query </summary>
+        /// <param name="query"> Query data </param>
         /// <param name="authData"> Authorization data </param>
-        public async ValueTask<string> PerformQuery(GraphQlQuery query, AuthData authData)
+        /// <param name="cancellationToken"> Propagates notification that operations should be canceled </param>
+        public async ValueTask<string> PerformQuery(GraphQlQuery query, AuthData authData, CancellationToken cancellationToken)
         {
             string json;
 
@@ -46,7 +56,7 @@
                     { "aggPostfix", this.Settings.AggPostfix },
                 };
 
-                json = await this.Connection.ReadJson(sql, parameters);
+                json = await this.Connection.ReadJson(sql, parameters, cancellationToken);
 
                 this.memoryCache.Set(IntrospectionCacheKey, json);
             }
@@ -62,7 +72,7 @@
                     { "variables", query.Variables.Serialize().AsSqlParameter() },
                 };
 
-                json = await this.Connection.ReadJson(sql, parameters);
+                json = await this.Connection.ReadJson(sql, parameters, cancellationToken);
             }
 
             return json;

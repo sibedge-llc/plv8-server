@@ -5,6 +5,7 @@
     using System.Data;
     using System.Linq;
     using System.Text.Json;
+    using System.Threading;
     using System.Threading.Tasks;
     using Helpers;
     using Microsoft.Extensions.Caching.Memory;
@@ -30,12 +31,30 @@
         /// <param name="idKeys"> Primary key fields </param>
         /// <param name="operation"> Data change operation </param>
         /// <param name="authData"> Authorization data </param>
-        public async Task<string> Change(
+        public Task<string> Change(
             string tableName,
             string data,
             IList<string> idKeys,
             ChangeOperation operation,
             AuthData authData)
+        {
+            return this.Change(tableName, data, idKeys, operation, authData, CancellationToken.None);
+        }
+
+        /// <summary> Insert data into table </summary>
+        /// <param name="tableName"> Table name </param>
+        /// <param name="data"> Data to insert </param>
+        /// <param name="idKeys"> Primary key fields </param>
+        /// <param name="operation"> Data change operation </param>
+        /// <param name="authData"> Authorization data </param>
+        /// <param name="cancellationToken"> Propagates notification that operations should be canceled </param>
+        public async Task<string> Change(
+            string tableName,
+            string data,
+            IList<string> idKeys,
+            ChangeOperation operation,
+            AuthData authData,
+            CancellationToken cancellationToken)
         {
             var sql =
                 "SELECT * FROM plv8.sql_change(@tableName, @data::jsonb, @idKeys, @operation, @schema, @user::jsonb);";
@@ -50,7 +69,7 @@
                 { "user", authData.Serialize().AsSqlParameter() },
             };
 
-            var result = await this.Connection.ReadJson(sql, parameters);
+            var result = await this.Connection.ReadJson(sql, parameters, cancellationToken);
 
             if (this.Settings.Audit?.Enabled == true)
             {
@@ -94,7 +113,7 @@
                         { nameof(result), result },
                     };
 
-                    await this.Connection.RunCommand(auditSql, auditParameters);
+                    await this.Connection.RunCommand(auditSql, auditParameters, cancellationToken);
                 }
             }
 
@@ -103,8 +122,32 @@
 
         /// <summary> Returns Open API schema JSON for change methods </summary>
         /// <param name="baseUrl"> Base URL for change endpoints </param>
+        public ValueTask<string> GetSchema(string baseUrl)
+        {
+            return GetSchema(baseUrl, null, CancellationToken.None);
+        }
+        
+        /// <summary> Returns Open API schema JSON for change methods </summary>
+        /// <param name="baseUrl"> Base URL for change endpoints </param>
+        /// <param name="cancellationToken"> Propagates notification that operations should be canceled </param>
+        public ValueTask<string> GetSchema(string baseUrl, CancellationToken cancellationToken)
+        {
+            return GetSchema(baseUrl, null, cancellationToken);
+        }
+
+        /// <summary> Returns Open API schema JSON for change methods </summary>
+        /// <param name="baseUrl"> Base URL for change endpoints </param>
         /// <param name="filterTables"> Optionally allowed to set tables (other will be ignored) </param>
-        public async ValueTask<string> GetSchema(string baseUrl, IList<string> filterTables = null)
+        public ValueTask<string> GetSchema(string baseUrl, IList<string> filterTables)
+        {
+            return GetSchema(baseUrl, filterTables, CancellationToken.None);
+        }
+
+        /// <summary> Returns Open API schema JSON for change methods </summary>
+        /// <param name="baseUrl"> Base URL for change endpoints </param>
+        /// <param name="filterTables"> Optionally allowed to set tables (other will be ignored) </param>
+        /// <param name="cancellationToken"> Propagates notification that operations should be canceled </param>
+        public async ValueTask<string> GetSchema(string baseUrl, IList<string> filterTables, CancellationToken cancellationToken)
         {
             var key = OpenApiSchemaCacheKey;
 
@@ -127,7 +170,7 @@
                 { "filterTables", (filterTables?.Serialize()).AsSqlParameter() },
             };
 
-            var json = await this.Connection.ReadJson(sql, parameters);
+            var json = await this.Connection.ReadJson(sql, parameters, cancellationToken);
 
             this.memoryCache.Set(key, json);
 

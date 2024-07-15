@@ -8,7 +8,7 @@
     public static class ControllerHelper
     {
         /// <summary> Returns JSON data </summary>
-        public static async ValueTask<IActionResult> GetFuncData(this Task<string> task, ControllerBase controller)
+        public static async Task<IActionResult> GetFuncData(this Task<string> task, ControllerBase controller)
         {
             try
             {
