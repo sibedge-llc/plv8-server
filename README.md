@@ -1,8 +1,6 @@
 # Sibedge.Plv8Server
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/sibedge-llc/plv8-server/blob/master/LICENSE)
-
-[![NuGet](https://img.shields.io/nuget/v/SmartFormat.svg)](https://www.nuget.org/packages/Sibedge.Plv8Server/) NuGet package
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/sibedge-llc/plv8-server/blob/master/LICENSE) [![NuGet](https://img.shields.io/nuget/v/SmartFormat.svg)](https://www.nuget.org/packages/Sibedge.Plv8Server/)
 
 Library for developing Asp.NET applications using PLV8 Framework.
 
